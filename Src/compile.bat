@@ -1,0 +1,1 @@
+g++ -Wall Launcher.cpp -o Sapa.exe -L. -std=c++11

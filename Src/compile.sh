@@ -1,0 +1,1 @@
+g++ -Wall Launcher.cpp -o Sapa -L. -lncurses -std=c++11
