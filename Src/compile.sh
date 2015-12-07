@@ -1,1 +1,1 @@
-g++ -Wall Launcher.cpp Bio.cpp -o Sapa -L. -lncurses -std=c++11
+g++ -Wall Bio.cpp Launcher.cpp System.cpp -o Sapa.exe -L. -std=c++11

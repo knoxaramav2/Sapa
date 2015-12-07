@@ -45,6 +45,11 @@ class systemCore
 
 public:
 	systemCore(const string);
+
+	//default
+	bool initialize();
+	//from SMAKE file
+	bool initialize(string);
 };
 
 #endif
