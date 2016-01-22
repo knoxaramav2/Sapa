@@ -1,0 +1,40 @@
+neurOn compilation templates
+
+Each .cst (c sapa template) file defines allowable fields,
+algorithms used, and other aspects used in c source code generation
+from the neurOn markup language.
+
+While editing the existing files is one way of re-configuring
+the compiler, it is advised to store the default files in a another directory so that they can be recovered easily in the event that a reset is needed.
+
+The directory MUST contain the files:
+	bioPlate.cst
+	master.cst
+	container.cst
+in order to compile. If one of these files is missing, or
+renamed so that no other file of that name is present, the neurOn
+compiler will fail.
+Implementing code fields is simple. Fields have some auto-formatting
+done by the compiler. Following a method declaration, inline-C code
+is added, following at least one tab per line. The first line of
+non-blank, non-tabbed code closes the function.
+
+.CST format
+
+Operators:
+&:declaration/tag
+@:function definition
+$:reference (function,type)
+>>:define C library to include
+#comment
+&declare objType cellName
+@function [type1] [name1], [type2] [name2] : returnType
+	codeFollowingTab...
+	moreCode...
+&end
+
+bioPlate.cst------------>
+#defines all cell types and neurotransmitters to be used.
+A standard API for new cells must be followed, and all required
+fields must be implemented for successful compilation.
+Additional functions may be added to custom cell types if desired.
