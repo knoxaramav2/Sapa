@@ -28,4 +28,53 @@ union settings
   };
 };
 
+struct srcFile
+{
+  string fileName;
+
+  vector <string> code;
+};
+
+//defines lexic token definition
+enum tokenType{
+//data types
+_dInt, _dFlt, _dStr,
+//operator
+
+//logic
+
+//actuation
+
+};
+
+
+
+struct byteCode
+{
+
+byteCode*parent;
+byteCode*success;
+byteCode*failure;
+byteCode**parameters;
+
+};
+
+class bytecodeTree
+{
+byteCode**roots;//roots
+}
+
+class project
+{
+
+srcFile nSrc;
+srcFile cSrc;
+
+string outputName;
+public:
+  settings opts;
+  SourceRegistry src;
+
+};
+
 #endif

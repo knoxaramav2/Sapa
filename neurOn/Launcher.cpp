@@ -21,12 +21,12 @@ void help()
   printf("\n\n");
 }
 
-settings parseCMD(int argc, char**argv,SourceRegistry&srcReg)
+project parseCMD(int argc, char**argv)
 {
 
 bool fatal=false;
 int readMode=0;
-settings opts;
+project prj;
 
 for (int x=1; x<argc; ++x)
 {
@@ -39,31 +39,32 @@ for (int x=1; x<argc; ++x)
       {
         case 'h': help(); break;
         case 'v': printf("%s\n", VERSION); break;
-        case 'c': opts.doCompile=true; readMode=readMode<2?1:2;break;//will expect .C files
-        case 'l': opts.doLink=true; readMode=2; break;//will expect .C OR .ctm files
-        case 'd': opts.debugMode=true; break;
-        case 'p': opts.prsvC=true; break;
+        case 'c': prj.opts.doCompile=true; readMode=readMode<2?1:2;break;//will expect .C files
+        case 'l': prj.opts.doLink=true; readMode=2; break;//will expect .C OR .ctm files
+        case 'd': prj.opts.debugMode=true; break;
+        case 'p': prj.opts.prsvC=true; break;
       }
     }else
       {
         if (readMode>0)
-          srcReg.addEntry(argv[x]);
+          prj.src.addEntry(argv[x]);
         else
           printf("Warning: Input \"%s\" ignored\n", argv[x]);
       }
   }else
     printf("Warning: Input \"%s\" ignored\n", argv[x]);
 }
+
+return prj;
 }
 
 int main(int argc, char**argv)
 {
-  SourceRegistry srcReg;
-  parseCMD(argc,argv,srcReg);
+  project p = parseCMD(argc,argv);
 
-  while (!srcReg.isEmpty())
+  while (!p.src.isEmpty())
   {
-    printf("%s\n", srcReg.popEntry().c_str());
+    printf("%s\n", p.src.popEntry().c_str());
   }
 
   return 0;
