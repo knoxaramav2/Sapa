@@ -7,8 +7,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.textfield.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" style="-fx-background-color:gray"
-	>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" style="-fx-background-color:gray">
 
 	<Text text="nSketch" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0"/>
 	

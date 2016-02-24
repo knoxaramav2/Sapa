@@ -1,0 +1,25 @@
+package gui;
+
+import javafx.application.Application;
+import javafx.scene.layout.VBoxBuilder;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+public class PopupController extends Application{
+	
+	Scene s1;
+	Button OK;
+	Button Cancel;
+
+	PopupController()
+	{
+		
+	}
+
+	@Override
+	public void start(Stage arg0) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}

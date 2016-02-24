@@ -1,0 +1,43 @@
+package gui;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBoxBuilder;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+public class PopupController extends Application{
+	
+	Scene s1;
+	Button OK;
+	Button Cancel;
+	Stage stage;
+
+	PopupController()
+	{
+		
+	}
+
+	//Supported FXML forms
+	
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		// TODO Auto-generated method stub
+		stage=primaryStage;
+	}
+	
+	@FXML protected void Cancel(ActionEvent event)
+	{
+		
+	}
+	
+	@FXML protected void Confirm(ActionEvent event)
+	{
+		
+	}
+	
+	
+}

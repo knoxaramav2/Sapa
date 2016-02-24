@@ -24,7 +24,7 @@ public class Launcher extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
-		Controller CT = new Controller(new Settings(primaryStage));//primary controller
+		Controller CT = new Controller(new Settings(primaryStage), primaryStage);//primary controller
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("../gui/Layout.fxml"));//load primary FXML
 		
 		loader.setController(CT);
@@ -33,7 +33,6 @@ public class Launcher extends Application{
 		
 		Scene scene = new Scene(loader.getRoot(),defaultWidth,defaultHeight);
 		
-		primaryStage.setTitle("nSketch");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}

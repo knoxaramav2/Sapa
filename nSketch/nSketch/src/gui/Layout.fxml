@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.SplitPane?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
 	prefHeight="720" prefWidth="1080">
@@ -14,13 +15,23 @@
 		<Pane fx:id="statusPane" prefHeight="30.0" BorderPane.alignment="CENTER" style="-fx-background-color:gray"/> 
 	</bottom>
 	<left>
-		<VBox fx:id="lPane"
-		style="-fx-border-color:black"
-		prefWidth="256.0">
-			<children>
+		<SplitPane fx:id="lPane" orientation="VERTICAL" style="-fx-background-color:gray"
+			dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="720" prefWidth="150">
+			<items>
+				<Label text="Components"/>
+				<Pane>
 				
-			</children>
-		</VBox>
+				</Pane>
+				
+			</items>
+			<items>
+				<Label text="Components" alignment="CENTER"/>
+				<Pane>
+				
+				</Pane>
+				
+			</items>
+		</SplitPane>
 	</left>
 	<top>
 		<MenuBar fx:id="menuBar" style="-fx-background-color:gray">
@@ -73,6 +84,11 @@
 	         <Menu text="Help">
 	            <items>
 	               <MenuItem text="About" onAction="#actAbout"/>
+	            </items>
+	         </Menu>
+	         <Menu text="Dev">
+	            <items>
+	               <MenuItem text="Test Feature" onAction="#actDev"/>
 	            </items>
 	         </Menu>
 	      </menus>

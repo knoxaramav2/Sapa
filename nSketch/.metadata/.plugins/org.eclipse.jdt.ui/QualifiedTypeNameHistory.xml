@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javafx.application.Application"/>
 <fullyQualifiedTypeName name="javafx.fxml.FXMLLoader"/>
 <fullyQualifiedTypeName name="javafx.scene.Parent"/>
-<fullyQualifiedTypeName name="javafx.stage.Modality"/>
 <fullyQualifiedTypeName name="javafx.stage.StageStyle"/>
-<fullyQualifiedTypeName name="javafx.scene.Scene"/>
 <fullyQualifiedTypeName name="gui.SubController"/>
 <fullyQualifiedTypeName name="gui.Controller"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="system.Settings"/>
 <fullyQualifiedTypeName name="java.awt.TextField"/>
 <fullyQualifiedTypeName name="javafx.scene.control.TextField"/>
-<fullyQualifiedTypeName name="javafx.fxml.FXML"/>
-<fullyQualifiedTypeName name="javafx.scene.control.Button"/>
 <fullyQualifiedTypeName name="javafx.stage.Stage"/>
+<fullyQualifiedTypeName name="javafx.stage.Modality"/>
+<fullyQualifiedTypeName name="javafx.scene.layout.VBoxBuilder"/>
+<fullyQualifiedTypeName name="javafx.application.Application"/>
+<fullyQualifiedTypeName name="javafx.scene.Scene"/>
+<fullyQualifiedTypeName name="javafx.scene.control.Button"/>
+<fullyQualifiedTypeName name="javafx.event.ActionEvent"/>
+<fullyQualifiedTypeName name="javafx.fxml.FXML"/>
+<fullyQualifiedTypeName name="javafx.scene.control.Label"/>
+<fullyQualifiedTypeName name="java.io.FileInputStream"/>
+<fullyQualifiedTypeName name="java.io.File"/>
 </qualifiedTypeNameHistroy>
