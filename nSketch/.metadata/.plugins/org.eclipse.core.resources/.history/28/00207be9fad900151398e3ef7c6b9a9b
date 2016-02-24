@@ -1,0 +1,40 @@
+package gui;
+
+import appFields.VersionField;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
+import system.Settings;
+
+public class SubController {
+	
+	//User mutable data
+	Settings settings = null;
+	
+	@FXML private TextField prjSetName;
+	@FXML private VersionField prjVers;
+	
+	public SubController(Settings st)
+	{
+		System.out.println("SubController created");
+		
+		settings=st;
+	}
+	
+	@FXML protected void actConfirmSettings(ActionEvent event)
+	{
+		System.out.println("Confirmed Settings");
+		
+		//copy data to settings
+		settings.setProjectName(prjSetName.getText());
+		
+	}
+	
+	@FXML protected void actCancelSettings(ActionEvent event)
+	{
+		System.out.println("Canceled Settings");
+		
+		@FXML private Button prjSetCancel;
+	}
+}

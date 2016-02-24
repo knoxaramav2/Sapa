@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:controller="system.Controller" xmlns:fx="http://javafx.com/fxml"
+	prefHeight="720" prefWidth="1080">
+	
+	<!-- <top><Text text="nSketch"/></top> -->
+	<left>
+		<VBox fx:id="lPane"
+		-fx-border-color:black>
+			<children>
+			
+			</children>
+		</VBox>
+	</left>
+</BorderPane>

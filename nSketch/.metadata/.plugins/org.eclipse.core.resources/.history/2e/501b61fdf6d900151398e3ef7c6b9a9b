@@ -1,0 +1,29 @@
+package gui;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.text.Text;
+import system.Settings;
+
+public class SubController {
+	
+	//User mutable data
+	Settings settings = null;
+	
+	public SubController(Settings st)
+	{
+		System.out.println("SubController created");
+		
+		settings=st;
+	}
+	
+	@FXML protected void actConfirmSettings(ActionEvent event)
+	{
+		
+	}
+	
+	@FXML protected void actCancelSettings(ActionEvent event)
+	{
+		
+	}
+}

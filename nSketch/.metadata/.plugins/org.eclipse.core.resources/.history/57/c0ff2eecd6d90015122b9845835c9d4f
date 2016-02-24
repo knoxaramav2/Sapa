@@ -1,0 +1,15 @@
+package system;
+
+class Version
+{
+	int MAJOR;
+	int MINOR;
+	int PATCH;
+}
+
+public class Settings {
+
+	String projectName;
+	Version version;
+	
+}

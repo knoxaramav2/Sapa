@@ -1,0 +1,32 @@
+package system;
+
+class Version
+{
+	int MAJOR;
+	int MINOR;
+	int PATCH;
+}
+
+/*
+ * Stores all project information
+ * 
+ */
+public class Settings {
+
+	String projectName;
+	Version version;
+	
+	public void setProjectName(String name)
+	{
+		projectName=name;
+	}
+	
+	public void setVersion(int M, int m, int p)
+	{
+		version.MAJOR=M;
+		version.MINOR=m;
+		version.PATCH=p;
+	}
+	
+	
+}

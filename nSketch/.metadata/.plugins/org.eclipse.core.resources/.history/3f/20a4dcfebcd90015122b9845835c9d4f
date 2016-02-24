@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:controller="system.Controller" xmlns:fx="http://javafx.com/fxml"
+	prefHeight="720" prefWidth="1080">
+	
+	<bottom>
+		<Pane fx:id="statusPane" prefHeight="30.0" BorderPane.alignment="CENTER" style="-fx-background-color:gray"/> 
+	</bottom>
+	<left>
+		<VBox fx:id="lPane"
+		style="-fx-border-color:black">
+			<children>
+				
+			</children>
+		</VBox>
+	</left>
+</BorderPane>

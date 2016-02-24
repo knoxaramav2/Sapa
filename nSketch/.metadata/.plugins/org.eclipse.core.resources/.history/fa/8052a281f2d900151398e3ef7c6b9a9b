@@ -1,0 +1,17 @@
+package gui;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.text.Text;
+
+public class SubController {
+	public SubController()
+	{
+		System.out.println("SubController created");
+	}
+	
+	@FXML protected void actConfirmSettings(ActionEvent event)
+	{
+		
+	}
+}
