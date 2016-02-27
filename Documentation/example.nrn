@@ -1,0 +1,50 @@
+
+#define cell
+cell
+{
+id=brkCell
+
+#extends default neuron definiton
+extend neuron
+
+#set decay coefficient
+#this value is static, and so compiles as a literal
+decay = 0.95
+
+	#defines custom operation
+	procedure
+	{
+		id=seizure
+		value=
+			code
+			{
+				if random(0,100) is 0 do fire()	
+			}	
+	}
+}
+
+system
+{
+TDF=1.0
+ECSC=0.85
+	subsystem
+	{
+		region
+		{
+			cluster
+			{
+				id=clstr1
+				#populate current cluster
+				@(brkCell loc=[3.0, -5.0, 4.8])
+				loop
+				{
+					#defines loop structure (default subtype array)
+					id=l1
+					len=20
+					#populate evens with brkCell
+					 
+				}
+			}
+		}
+	}
+}
