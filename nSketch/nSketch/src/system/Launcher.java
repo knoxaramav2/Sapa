@@ -31,6 +31,7 @@ public class Launcher extends Application{
 
 		loader.load();
 		
+	
 		Scene scene = new Scene(loader.getRoot(),defaultWidth,defaultHeight);
 		
 		primaryStage.setScene(scene);

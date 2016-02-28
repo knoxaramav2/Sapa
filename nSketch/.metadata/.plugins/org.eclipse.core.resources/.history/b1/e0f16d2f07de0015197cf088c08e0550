@@ -1,0 +1,14 @@
+package fileIo;
+
+import system.Settings;
+
+public class ProjectWriter {
+
+	public static Boolean writeProjectFile(Settings stt)
+	{
+		
+		
+		return true;
+	}
+	
+}

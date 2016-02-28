@@ -1,0 +1,11 @@
+package system;
+
+public class FileUtility {
+
+	static Boolean PathExists()
+	{
+		
+		return false;
+	}
+	
+}

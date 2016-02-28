@@ -1,0 +1,25 @@
+package fileIo;
+
+import system.Settings;
+
+public class ProjectWriter {
+
+	public static Boolean writeProjectFile(Settings stt)
+	{
+		
+		
+		return true;
+	}
+	
+	public static Boolean saveProject(Settings stt)
+	{
+	
+		return true;
+	}
+	
+	public static Boolean loadProject(Settings stt)
+	{
+		
+		return true;
+	}
+}

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.SplitPane?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+	prefHeight="720" prefWidth="1080">
+	
+	<bottom>
+		<GridPane fx:id="statusPane" prefHeight="20.0" BorderPane.alignment="CENTER"
+			style="-fx-background-color:gray; -fx-border-color:black;  -fx-border-width:1; -fx-border-style:solid">
+			<Pane style="-fx-border-color:black" fx:id="statusPane"
+				GridPane.columnIndex="0" GridPane.rowIndex="0"
+				prefWidth="80">
+				<Label text="Status "/>
+				<Label fx:id="statusLabel"/>
+			</Pane>
+			
+		</GridPane>
+	</bottom>
+	<left>
+		<SplitPane fx:id="lPane" orientation="VERTICAL" style="-fx-background-color:gray; -fx-border-color:black;  -fx-border-width:1; -fx-border-style:solid"
+			dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080" prefWidth="150">
+			<items>
+				<Label text="Components"/>
+				<Pane>
+				
+				</Pane>
+				
+			</items>
+			<items>
+				<Label text="Components" alignment="CENTER"/>
+				<Pane>
+				
+				</Pane>
+				
+			</items>
+		</SplitPane>
+	</left>
+	<top>
+		<MenuBar fx:id="menuBar" style="-fx-background-color:gray">
+	      <menus>
+	         <Menu text="File">
+	            <items>
+	               <MenuItem text="New Project" onAction="#actNewProject"/>
+	               <MenuItem text="Open Project" onAction="#actLoadProject"/>
+	               <MenuItem text="Save Project" onAction="#actSaveProject"/>
+	               		<SeparatorMenuItem />
+	               <MenuItem text="New Diagram"/>
+	               <MenuItem text="Open Diagram"/>
+	               <MenuItem text="Import Diagram"/>
+	               <MenuItem text="Save Diagram"/>
+	               <MenuItem text="Save Diagram As"/>
+	               		<SeparatorMenuItem  />
+	               <MenuItem text="Exit" onAction="#actExit"/>
+	            </items>
+	         </Menu>
+	         <Menu text="Objects">
+	            <items>
+	               <MenuItem text="View Objects"/>
+	               		<SeparatorMenuItem />
+	               <MenuItem text="Define New"/>
+	            </items>
+	         </Menu>
+	         <Menu text="Compile">
+	            <items>
+	               <MenuItem text="Export Connectome"/>
+	               <MenuItem text="Compile to Runnable"/>
+	            </items>
+	         </Menu>
+	         <Menu text="View">
+	            <items>
+	               <MenuItem text="View Settings"/>
+	            </items>
+	         </Menu>
+	         <Menu text="Settings">
+	            <items>
+	               <MenuItem text="Configure Project" onAction="#actProjectSettings"/>
+	               <MenuItem text="Compilation Settings"/>
+	               <MenuItem text="Project Settings"/>
+	            </items>
+	         </Menu>
+	         <Menu text="Info">
+	            <items>
+	               <MenuItem text="Statistics"/>
+	            </items>
+	         </Menu>
+	         <Menu text="Help">
+	            <items>
+	               <MenuItem text="About" onAction="#actAbout"/>
+	            </items>
+	         </Menu>
+	         <Menu text="Dev">
+	            <items>
+	               <MenuItem text="Test Feature" onAction="#actDev"/>
+	            </items>
+	         </Menu>
+	      </menus>
+	   </MenuBar>
+	  </top>
+	<center>
+		<Pane fx:id="centerPane" style="-fx-background-color:black">
+		
+		</Pane>
+	</center>
+
+</BorderPane>

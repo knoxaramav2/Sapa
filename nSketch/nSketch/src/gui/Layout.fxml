@@ -12,11 +12,28 @@
 	prefHeight="720" prefWidth="1080">
 	
 	<bottom>
-		<Pane fx:id="statusPane" prefHeight="30.0" BorderPane.alignment="CENTER" style="-fx-background-color:gray"/> 
+		<GridPane fx:id="statusPane" prefHeight="20.0" BorderPane.alignment="CENTER"
+			style="-fx-background-color:gray; -fx-border-color:black;  -fx-border-width:1; -fx-border-style:solid">
+			<AnchorPane style="-fx-border-color:black" fx:id="statusPane"
+				GridPane.columnIndex="0" GridPane.rowIndex="0"
+				prefWidth="80">
+				<Label text="Status " AnchorPane.leftAnchor="2"/>
+				<Label text="OK" fx:id="statusLabel" AnchorPane.rightAnchor="2"/>
+			</AnchorPane>
+			<ProgressBar fx:id="loadBar" prefHeight="20.0" prefWidth="200" BorderPane.alignment="CENTER" progress="0"
+				style="-fx-background-color:gray; -fx-border-color:black;  -fx-border-width:1; -fx-border-style:solid"
+				GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+			<AnchorPane style="-fx-border-color:black" fx:id="statsPane"
+				GridPane.columnIndex="2" GridPane.rowIndex="0"
+				prefWidth="110">
+				<Label text="0" AnchorPane.rightAnchor="2"/>
+				<Label text="Components:" fx:id="componentLabel" AnchorPane.leftAnchor="2"/>
+			</AnchorPane>
+		</GridPane>
 	</bottom>
 	<left>
-		<SplitPane fx:id="lPane" orientation="VERTICAL" style="-fx-background-color:gray"
-			dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="720" prefWidth="150">
+		<SplitPane fx:id="lPane" orientation="VERTICAL" style="-fx-background-color:gray; -fx-border-color:black;  -fx-border-width:1; -fx-border-style:solid"
+			dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080" prefWidth="150">
 			<items>
 				<Label text="Components"/>
 				<Pane>
@@ -38,9 +55,9 @@
 	      <menus>
 	         <Menu text="File">
 	            <items>
-	               <MenuItem text="New Project"/>
-	               <MenuItem text="Open Project"/>
-	               <MenuItem text="Save Project"/>
+	               <MenuItem text="New Project" onAction="#actNewProject"/>
+	               <MenuItem text="Open Project" onAction="#actLoadProject"/>
+	               <MenuItem text="Save Project" onAction="#actSaveProject"/>
 	               		<SeparatorMenuItem />
 	               <MenuItem text="New Diagram"/>
 	               <MenuItem text="Open Diagram"/>
@@ -94,4 +111,10 @@
 	      </menus>
 	   </MenuBar>
 	  </top>
+	<center>
+		<Pane fx:id="centerPane" style="-fx-background-color:black">
+		
+		</Pane>
+	</center>
+
 </BorderPane>
