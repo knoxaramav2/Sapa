@@ -5,18 +5,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import fileIo.ProjectWriter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import system.Settings;
+import system.SysIO;
 
 public class Controller {
 	
@@ -25,6 +29,9 @@ public class Controller {
 	
 	Settings settings = null;
 	Stage stage = null;
+	
+	@FXML Label statusLabel;
+	@FXML Label actionLabel;
 	
 	public Controller(Settings st, Stage pStage)
 	{
@@ -41,7 +48,7 @@ public class Controller {
 	
 	@FXML protected void actAbout(ActionEvent event)
 	{
-		System.out.println("About Pressed");
+		SysIO.print("About", actionLabel);
 		
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("About.fxml"));
@@ -65,7 +72,7 @@ public class Controller {
 	
 	@FXML protected void actProjectSettings(ActionEvent event)
 	{	
-		System.out.println("Configure Project");
+		SysIO.print("Configure Project", actionLabel);
 		
 		if (!settings.isProjectActive())
 			return;
@@ -89,6 +96,8 @@ public class Controller {
 	@FXML protected void actDev(ActionEvent event)
 	{
 		
+		SysIO.print("Exe Dev", actionLabel);
+		
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Popup.fxml"));
 			Parent root = (Parent) fxmlLoader.load();
@@ -104,9 +113,16 @@ public class Controller {
 		}
 	}
 	
+	@FXML protected void actSetPrj(ActionEvent event)
+	{
+		settings.setProjectActive(true);
+		
+		SysIO.print("Set Active", actionLabel);
+	}
+	
 	@FXML protected void actNewProject(ActionEvent event)
 	{
-		System.out.println("New Project");
+		SysIO.print("New Project", actionLabel);
 		
 		//prompt for save or cancel
 		if (settings.isProjectActive())
@@ -133,11 +149,14 @@ public class Controller {
 	
 	@FXML protected void actLoadProject(ActionEvent event)
 	{
-		System.out.println("Load Project");
+		SysIO.print("Load Project", actionLabel);
 		
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Open Project File");
 		fc.setInitialDirectory(new File(settings.getProjectPath()));
+		
+		FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("nSketch Project (*.cns)", "*.cns");
+		fc.getExtensionFilters().add(filter);
 		
 		File file = fc.showOpenDialog(stage);
 		if (file!=null)
@@ -149,16 +168,21 @@ public class Controller {
 	
 	@FXML protected void actSaveProject(ActionEvent event)
 	{
-		System.out.println("Save Project");
+		SysIO.print("Save Project", actionLabel);
+		
+		ProjectWriter.saveProject(settings);
 	}
+
 	
-	
-	
-	//Utility methods
-	
+	//Utility methods	
 	protected void loadProjectFile(File file)
 	{
 		
 		System.out.println(file.getName());
+	}
+
+	public void setStatus(String msg)
+	{
+		statusLabel.setText(msg);
 	}
 }

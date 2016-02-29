@@ -1,0 +1,59 @@
+package fileIo;
+
+import java.io.File;
+import java.io.IOException;
+
+import system.FileUtility;
+import system.Settings;
+
+public class ProjectWriter {
+
+	//write project description file
+	public static Boolean writeProjectFile(Settings stt)
+	{	
+		if (!FileUtility.PathExists(stt.getProjectPath()+stt.getProjectName()))
+			try {
+				File prjFile = new File(stt.getPath()+"/"+stt.getProjectName()+".cns");
+				prjFile.createNewFile();
+				System.out.println("Created new project");
+			} catch (IOException e) {
+				System.out.println("Project already exists");
+				e.printStackTrace();
+			}
+		
+		return true;
+	}
+	
+	public static Boolean readProjectFile(Settings stt)
+	{
+		return true;
+	}
+	
+	//write/save particular source file
+	public static Boolean writeNeuronFile(Settings stt, String target)
+	{
+		
+		
+		return true;
+	}
+	
+	public static Boolean readNeuroNFile(Settings stt, String target)
+	{
+		
+		return true;
+	}
+	
+	//save entire project
+	public static Boolean saveProject(Settings stt)
+	{
+	
+		return true;
+	}
+	
+	//load entire project
+	public static Boolean loadProject(Settings stt)
+	{
+		
+		return true;
+	}
+}

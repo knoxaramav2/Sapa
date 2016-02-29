@@ -1,0 +1,11 @@
+package system;
+
+/*
+ * This class adds standard output utility
+ */
+
+public class SysIO {
+
+	
+	
+}

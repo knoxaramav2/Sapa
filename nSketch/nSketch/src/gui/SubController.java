@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import appFields.VersionField;
+import fileIo.ProjectWriter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -44,8 +45,11 @@ public class SubController {
 	{
 		prjSetName.setText(settings.getProjectName());
 		prjPath.setText(settings.getProjectPath());
-		rb1.setSelected(true);
-		rb2.setSelected(false);
+		
+		if (rb1!=null)
+			rb1.setSelected(true);
+		if (rb2!=null)
+			rb2.setSelected(false);
 	}
 	
 	@FXML protected void actConfirmSettings(ActionEvent event)
@@ -58,6 +62,9 @@ public class SubController {
 		settings.setProjectName(prjSetName.getText());
 		
 		System.out.println("--> "+prjSetName.getText());
+		
+		
+		ProjectWriter.saveProject(settings);
 		
 		((Stage) prjSetConfirm.getScene().getWindow()).close();
 	}
@@ -85,10 +92,13 @@ public class SubController {
 		//Create new project files
 		settings.setProjectName(prjSetName.getText());
 		settings.setProjectPath(prjPath.getText());
-		(new File(settings.getProjectPath()+settings.getProjectName())).mkdir();
 		
-		//Exit
-		settings.setProjectActive(true);
+		
+		
+		if (ProjectWriter.writeProjectFile(settings))
+			settings.setProjectActive(true);
+		else
+			System.out.println("Project unable to be created");
 		
 		((Stage) prjSetConfirm.getScene().getWindow()).close();
 	}

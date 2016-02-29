@@ -16,6 +16,13 @@ class Version
 		MINOR=0;
 		PATCH=0;
 	}
+	
+	@Override
+	public
+	String toString()
+	{
+		return new String(Integer.toString(MAJOR)+"."+Integer.toString(MINOR)+"."+Integer.toString(PATCH));
+	}
 }
 
 /*
@@ -29,6 +36,7 @@ public class Settings {
 	String projectPath = null;
 	Version version = null;
 	Boolean activeProject = null;
+	ArrayList <String> fileList = null;
 	
 	//Compiler Settings
 	Boolean bitmode64;
@@ -47,8 +55,16 @@ public class Settings {
 	public Settings(Stage stg)
 	{
 		projectName = new String();
+		projectPath = new String();
 		version = new Version();
 		activeProject=new Boolean(false);
+		fileList = new ArrayList <String>();
+		
+		bitmode64 = new Boolean(true);
+		interLang = new String("C");
+		
+		ECSC = new Double(0.0);
+		TDF = new Integer(1);
 		
 		primaryStage = stg;
 	
@@ -59,6 +75,8 @@ public class Settings {
 	public void setProjectName(String name)
 	{
 		projectName=name;
+		
+		projectPath=new String(projectPath+projectName);
 		
 		primaryStage.setTitle("nSketch    - "+name);
 		
@@ -71,7 +89,6 @@ public class Settings {
 		version.MINOR=m;
 		version.PATCH=p;
 	}
-	
 	
 	public String getProjectName()
 	{
@@ -88,6 +105,31 @@ public class Settings {
 		return projectPath;
 	}
 	
+	public String getPath()
+	{
+		return new String(projectPath+projectName+"/");
+	}
+
+	public String getVersion()
+	{
+		return version.toString();
+	}
+	
+	public String getInterLang()
+	{
+		return interLang;
+	}
+	
+	public ArrayList<String> getFileList()
+	{
+		return fileList;
+	}
+	
+	public Boolean is64bit()
+	{
+		return bitmode64;
+	}
+	
 	public void setProjectPath(String path)
 	{
 		System.out.println("Settings path to "+path);
@@ -98,4 +140,5 @@ public class Settings {
 	{
 		activeProject=state;
 	}
+
 }

@@ -7,6 +7,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.Pane?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
 	prefHeight="720" prefWidth="1080">
@@ -14,7 +15,7 @@
 	<bottom>
 		<GridPane fx:id="statusPane" prefHeight="20.0" BorderPane.alignment="CENTER"
 			style="-fx-background-color:gray; -fx-border-color:black;  -fx-border-width:1; -fx-border-style:solid">
-			<AnchorPane style="-fx-border-color:black" fx:id="statusPane"
+			<AnchorPane style="-fx-border-color:black; -fx-background-color:green" fx:id="statusPane"
 				GridPane.columnIndex="0" GridPane.rowIndex="0"
 				prefWidth="80">
 				<Label text="Status " AnchorPane.leftAnchor="2"/>
@@ -23,8 +24,14 @@
 			<ProgressBar fx:id="loadBar" prefHeight="20.0" prefWidth="200" BorderPane.alignment="CENTER" progress="0"
 				style="-fx-background-color:gray; -fx-border-color:black;  -fx-border-width:1; -fx-border-style:solid"
 				GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-			<AnchorPane style="-fx-border-color:black" fx:id="statsPane"
+			<AnchorPane style="-fx-border-color:black; -fx-background-color:blue" fx:id="actionPane"
 				GridPane.columnIndex="2" GridPane.rowIndex="0"
+				prefWidth="150">
+				<Label text="Action " AnchorPane.leftAnchor="2"/>
+				<Label text="" fx:id="actionLabel" AnchorPane.rightAnchor="2"/>
+			</AnchorPane>
+			<AnchorPane style="-fx-border-color:black" fx:id="statsPane"
+				GridPane.columnIndex="3" GridPane.rowIndex="0"
 				prefWidth="110">
 				<Label text="0" AnchorPane.rightAnchor="2"/>
 				<Label text="Components:" fx:id="componentLabel" AnchorPane.leftAnchor="2"/>
@@ -32,21 +39,25 @@
 		</GridPane>
 	</bottom>
 	<left>
-		<SplitPane fx:id="lPane" orientation="VERTICAL" style="-fx-background-color:gray; -fx-border-color:black;  -fx-border-width:1; -fx-border-style:solid"
+		<SplitPane fx:id="lPane" orientation="VERTICAL" style="-fx-background-color:gray; -fx-border-color:gray; -fx-border-width:1; -fx-border-style:solid"
 			dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="1080" prefWidth="150">
 			<items>
-				<Label text="Components"/>
-				<Pane>
-				
-				</Pane>
-				
-			</items>
-			<items>
-				<Label text="Components" alignment="CENTER"/>
-				<Pane>
-				
-				</Pane>
-				
+				<ScrollPane fx:id="hierarchyPane" style="-fx-background:gray">
+					<content>
+						<VBox alignment="center">
+							<Label text="Hierarchy"/>
+							<!-- Current Project Levels -->
+						</VBox>
+					</content>
+				</ScrollPane>
+				<ScrollPane fx:id="componentPane" style="-fx-background:gray">
+					<content>
+						<VBox alignment="center">
+							<Label text="Components"/>
+							<!-- Current Component templates -->
+						</VBox>
+					</content>
+				</ScrollPane>
 			</items>
 		</SplitPane>
 	</left>
@@ -106,15 +117,28 @@
 	         <Menu text="Dev">
 	            <items>
 	               <MenuItem text="Test Feature" onAction="#actDev"/>
+	               <MenuItem text="Set Project Active" onAction="#actSetPrj"/>
 	            </items>
 	         </Menu>
 	      </menus>
 	   </MenuBar>
 	  </top>
 	<center>
-		<Pane fx:id="centerPane" style="-fx-background-color:black">
-		
-		</Pane>
+		<VBox>
+			<children>
+				<TabPane style="-fx-background-color:darkgray" minHeight="25">
+				
+				</TabPane>
+				<Pane style="-fx-background-color:black" prefHeight="1080">
+				
+				</Pane>
+			</children>
+		</VBox>
 	</center>
+	<right>
+		<VBox style="-fx-background-color:gray" prefWidth="126">
+			<Label text="Controls"/>
+		</VBox>
+	</right>
 
 </BorderPane>

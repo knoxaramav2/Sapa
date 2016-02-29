@@ -6,7 +6,14 @@ public class FileUtility {
 
 	public static Boolean PathExists(String path)
 	{
-		return !((new File(path))==null);
+		File f = new File(path);
+		return (f.exists() && f.isDirectory());
+	}
+	
+	public static Boolean FileExists(String path)
+	{
+		File f = new File(path);
+		return (f.exists() && !f.isDirectory());
 	}
 	
 }
