@@ -1,0 +1,23 @@
+package coordinate;
+
+public class Space3D {
+
+	private double xPos;
+	private double yPos;
+	private double zPos;
+	
+	Rotation rx;
+	Rotation ry;
+	Rotation rz;
+	
+	Space3D(double xp, double yp, double zp, double xr, double yr, double zr)
+	{
+		xPos=xp;
+		yPos=yp;
+		zPos=zp;
+		
+		xRot=xr;
+		yRot=yr;
+		zRot=zr;
+	}
+}

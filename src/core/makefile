@@ -3,7 +3,7 @@
 CC=g++
 CFLAGS= -Wall -std=c++14
 LIBS= -lm -L/Libs -L. Libs/KNX_Library.a
-SRC=Launcher
+SRC=Launcher Structures Settings Compiler Registry
 INCLUDES= -I.
 OUT=nrn
 CLEANEXT = o a
@@ -14,14 +14,14 @@ ifeq ($(shell uname), Linux)
 	FixPath = $1
 	PLATFORM = -D__LINUX
 	OSMODE = -DBITMODE=$(BITVRS)
-	EXPORT_PTH=../../
+	EXPORT_PTH=../../bin_/core/
 	EXT=
 else
 #Windows
 	FixPath = $(subst /,\,$1)
 	PLATFORM = -D__WINDOWS
 	OSMODE = -DBITMODE=$(BITVRS)
-	EXPORT_PTH=../../
+	EXPORT_PTH=../../bin_/core/
 	EXT=.exe
 endif
 

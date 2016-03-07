@@ -1,0 +1,9 @@
+package graphic3D;
+
+/*
+ * A drawable 3D neural node
+ */
+
+public class Neuron3D {
+
+}

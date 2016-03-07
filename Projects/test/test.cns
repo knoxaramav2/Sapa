@@ -1,0 +1,17 @@
+#test CNS file
+#used for dev testing
+
+#depend region declares imports
+!depend
+src.nrn
+
+#configuration region declares system settings
+!config
+outputpath=#blank value sets output to be here#
+title=test project
+version=1.0.0
+lang=c
+!
+
+
+

@@ -1,0 +1,25 @@
+package coordinate;
+
+import javafx.scene.transform.Rotate;
+
+public class Space3D {
+
+	private double xPos;
+	private double yPos;
+	private double zPos;
+	
+	Rotate rx;
+	Rotate ry;
+	Rotate rz;
+	
+	Space3D(double xp, double yp, double zp, double xr, double yr, double zr)
+	{
+		xPos=xp;
+		yPos=yp;
+		zPos=zp;
+		
+		rx.setAngle(xr);
+		ry.setAngle(yr);
+		rz.setAngle(zr);
+	}
+}

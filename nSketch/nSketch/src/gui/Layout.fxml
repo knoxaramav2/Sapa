@@ -8,10 +8,21 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.MeshView?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.PhongMaterial?>
+<?import javafx.scene.shape.MeshView?>
+<?import javafx.scene.shape.TriangleMesh?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-	prefHeight="720" prefWidth="1080">
+	prefHeight="720" prefWidth="1080"
+	fx:id = "mainWindow">
 	
+	<center>
+		<Pane fx:id="centerWindow" style="-fx-background-color:black">
+		
+		</Pane>
+	</center>
 	<bottom>
 		<GridPane fx:id="statusPane" prefHeight="20.0" BorderPane.alignment="CENTER"
 			style="-fx-background-color:gray; -fx-border-color:black;  -fx-border-width:1; -fx-border-style:solid">
@@ -24,7 +35,7 @@
 			<ProgressBar fx:id="loadBar" prefHeight="20.0" prefWidth="200" BorderPane.alignment="CENTER" progress="0"
 				style="-fx-background-color:gray; -fx-border-color:black;  -fx-border-width:1; -fx-border-style:solid"
 				GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-			<AnchorPane style="-fx-border-color:black; -fx-background-color:blue" fx:id="actionPane"
+			<AnchorPane style="-fx-border-color:black; -fx-background-color:gray" fx:id="actionPane"
 				GridPane.columnIndex="2" GridPane.rowIndex="0"
 				prefWidth="150">
 				<Label text="Action " AnchorPane.leftAnchor="2"/>
@@ -36,6 +47,36 @@
 				<Label text="0" AnchorPane.rightAnchor="2"/>
 				<Label text="Components:" fx:id="componentLabel" AnchorPane.leftAnchor="2"/>
 			</AnchorPane>
+			<SplitPane style="-fx-border-color:black" fx:id="mcoordPane"
+				GridPane.columnIndex="3" GridPane.rowIndex="0" prefWidth="100" orientation="HORIZONTAL">
+				<Label text="X: "/>
+				<Label text="0.0" fx:id="xcoordLabel"/>
+				<Label text="Y: "/>
+				<Label text="0.0" fx:id="ycoordLabel"/>
+			</SplitPane>
+			<SplitPane style="-fx-border-color:black" fx:id="nrStat"
+				GridPane.columnIndex="4" GridPane.rowIndex="0" prefWidth="170" orientation="HORIZONTAL">
+				<Label text="Neurons: "/>
+				<Label text="0" fx:id="nrnStatLabel"/>
+				<Label text="Axons: "/>
+				<Label text="0" fx:id="axnStatLabel"/>
+			</SplitPane>
+			<SplitPane style="-fx-border-color:black" fx:id="glbStat"
+				GridPane.columnIndex="5" GridPane.rowIndex="0" prefWidth="400" orientation="HORIZONTAL">
+				<Label text="Xpos " style="-fx-background-color:gray"/>
+				<Label text="0" fx:id="xPosLabel"/>
+				<Label text="YPos " style="-fx-background-color:gray"/>
+				<Label text="0" fx:id="yPosLabel"/>
+				<Label text="ZPos " style="-fx-background-color:gray"/>
+				<Label text="0" fx:id="zPosLabel"/>
+				<Label text="Xrot " style="-fx-background-color:gray"/>
+				<Label text="0" fx:id="xRotLabel"/>
+				<Label text="Yrot " style="-fx-background-color:gray"/>
+				<Label text="0" fx:id="yRotLabel"/>
+				<Label text="Zrot " style="-fx-background-color:gray"/>
+				<Label text="0" fx:id="zRotLabel"/>
+				
+			</SplitPane>
 		</GridPane>
 	</bottom>
 	<left>
@@ -123,18 +164,6 @@
 	      </menus>
 	   </MenuBar>
 	  </top>
-	<center>
-		<VBox>
-			<children>
-				<TabPane style="-fx-background-color:darkgray" minHeight="25">
-				
-				</TabPane>
-				<Pane style="-fx-background-color:black" prefHeight="1080">
-				
-				</Pane>
-			</children>
-		</VBox>
-	</center>
 	<right>
 		<VBox style="-fx-background-color:gray" prefWidth="126">
 			<Label text="Controls"/>

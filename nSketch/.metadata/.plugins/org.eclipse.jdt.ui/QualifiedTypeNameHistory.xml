@@ -30,4 +30,25 @@
 <fullyQualifiedTypeName name="system.SysIO"/>
 <fullyQualifiedTypeName name="javafx.scene.control.Label"/>
 <fullyQualifiedTypeName name="fileIo.ProjectWriter"/>
+<fullyQualifiedTypeName name="java.awt.Panel"/>
+<fullyQualifiedTypeName name="javafx.scene.shape.MeshView"/>
+<fullyQualifiedTypeName name="javafx.scene.layout.Pane"/>
+<fullyQualifiedTypeName name="javafx.scene.paint.PhongMaterial"/>
+<fullyQualifiedTypeName name="javafx.scene.paint.Material"/>
+<fullyQualifiedTypeName name="javafx.application.Platform"/>
+<fullyQualifiedTypeName name="javafx.application.ConditionalFeature"/>
+<fullyQualifiedTypeName name="com.sun.prism.paint.Color"/>
+<fullyQualifiedTypeName name="com.sun.javafx.geom.Rectangle"/>
+<fullyQualifiedTypeName name="javafx.scene.shape.Rectangle"/>
+<fullyQualifiedTypeName name="javafx.scene.Group"/>
+<fullyQualifiedTypeName name="javafx.scene.control.Slider"/>
+<fullyQualifiedTypeName name="javafx.scene.layout.BorderPane"/>
+<fullyQualifiedTypeName name="javafx.scene.paint.Paint"/>
+<fullyQualifiedTypeName name="javafx.scene.PerspectiveCamera"/>
+<fullyQualifiedTypeName name="javafx.scene.DepthTest"/>
+<fullyQualifiedTypeName name="javafx.scene.input.MouseEvent"/>
+<fullyQualifiedTypeName name="javafx.scene.transform.Rotate"/>
+<fullyQualifiedTypeName name="javafx.scene.transform.Translate"/>
+<fullyQualifiedTypeName name="javafx.scene.transform.Scale"/>
+<fullyQualifiedTypeName name="coordinate.Space3D"/>
 </qualifiedTypeNameHistroy>

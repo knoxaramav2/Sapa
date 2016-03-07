@@ -1,0 +1,5 @@
+package coordinate;
+
+public class Space3D {
+
+}
