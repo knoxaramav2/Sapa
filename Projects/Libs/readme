@@ -1,0 +1,4 @@
+Store .nrn files in this directory to access them with the @L macro from
+a project directory
+
+!import @LexampleLib.nrn

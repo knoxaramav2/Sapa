@@ -1,17 +1,30 @@
 #test CNS file
-#used for dev testing
+#SAPA project file
+#directory of
 
-#depend region declares imports
-!depend
-src.nrn
+# = SET
+# ^ IMPORT
+# ? PSUEDO
 
-#configuration region declares system settings
-!config
-outputpath=#blank value sets output to be here#
-title=test project
-version=1.0.0
-lang=c
-!
+^ src.nrn
 
+#compilation settings
+= evolution false
+= optimize false
+= debug true
+= title dev
+= version 1.0.0
+= lang c++
+= makeRTE false
+= makeCTM false
+= prsvSymb false
 
+#sim settings
+= RSP -70#resting potential
+= TDF 1.0#time dilation factor
+= NGEN 1#neuro genesis
+= NMAX 500#max allowed neurons. 0 for infinite
+= NTRAN 2#multiple of 8 neurotransmitter slots. Must have at least 1. Max 8 for 64 bit system, 4 for 32
 
+= var1 "test"
+$post @var1

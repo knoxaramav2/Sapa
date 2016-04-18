@@ -3,11 +3,12 @@
 CC=g++
 CFLAGS= -Wall -std=c++14
 LIBS= -lm -L/Libs -L. Libs/KNX_Library.a
-SRC=Launcher Structures Settings Compiler Registry
+SRC=Launcher Error Project
 INCLUDES= -I.
 OUT=nrn
 CLEANEXT = o a
 BITVRS=64
+DBGFLAGS= -o -s --src test.cns
 
 #configure for Linux and Windows
 ifeq ($(shell uname), Linux)
@@ -16,6 +17,7 @@ ifeq ($(shell uname), Linux)
 	OSMODE = -DBITMODE=$(BITVRS)
 	EXPORT_PTH=../../bin_/core/
 	EXT=
+	RUNPATH=./$(EXPORT_PTH)$(OUT)
 else
 #Windows
 	FixPath = $(subst /,\,$1)
@@ -23,10 +25,11 @@ else
 	OSMODE = -DBITMODE=$(BITVRS)
 	EXPORT_PTH=../../bin_/core/
 	EXT=.exe
+	RUNPATH=$(EXPORT_PTH)$(OUT)
 endif
 
 $(OUT):$(SRC:=.cpp)
-	$(CC) $(SRC:=.cpp) $(OSMODE) $(CFLAGS) -LLibs -lKNX_Library -o $(EXPORT_PTH)$(OUT)$(EXT)
+	$(CC) $(SRC:=.cpp) $(OSMODE) $(PLATFORM) $(CFLAGS) -LLibs -lKNX_Library -o $(EXPORT_PTH)$(OUT)$(EXT)
 	#$(CC) -o $(EXPORT_PTH)$(OUT)$(EXT)  $^ $(OSMODE) $(PLATFORM) $(CFLAGS) $(LIBS)
 	#$(CC) $(SRC:=.cpp) -LLibs -lKNX_Library -o nrn
 	#g++ -o nrn Launcher.cpp -L/Libs -lKNX_Library.a
@@ -37,3 +40,11 @@ dep:
 .PHONY: clean
 clean:
 	rm -f $@ *.o
+
+.PHONY: run
+run: $(OUT)
+	$(RUNPATH) --src test.cns
+
+.PHONY: dbg
+dbg: $(OUT)
+	$(RUNPATH) $(DBGFLAGS)

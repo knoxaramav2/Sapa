@@ -1,0 +1,4 @@
+#$import <file>		common operation
+
+@transAlloc = 1#single byte allocation (8 transmitters)
+@title = 

@@ -1,0 +1,55 @@
+#defines basic neural structure
+#neural systems use this file as a reference
+#modifying this file will fundamentally change how the system works
+#make a copy before changing
+
+#make global declarations
+#make pseudonyms for neurotransmitters
+#ex = excitatory
+#in = inhibitory
+#neurotransmitters are single bits.
+sudo ntran1 exHi
+sudo ntran2 exMd
+sudo ntran3 exLo
+sudo ntran4 inHi
+sudo ntran5 inMd
+sudo ntran6 inLo
+
+sudo ntran7 str#strengthens connections
+sudo ntran8 wkn#weakens connections
+
+#define base cell type
+new cell neuron
+#setup variables
+deci  (charge, $RSP)#initialize at resting potential
+deci  (decay, 0.5)#halves charge every cycle
+deci  (thresh, $RSP+15)#threshold 15mv above RSP
+deci  (influx, 0)
+arr   (targets, neuron)
+arr   (weights, deci)
+
+#transmitters released during action/graded potential
+transmitter output#sized according to project specification (NTRAN value (8 bits * n))
+
+#timeframe update function
+  fnc   (update)
+    charge += $influx
+    influx *= $decay
+    ?[$charge >= $threshold]
+      fire()
+    :
+      charge *= $decay
+  end
+
+  fnc   (receive, deci weight, transmitter trans)
+    charge+=$weight
+  end
+
+  #action potential
+  fnc   (fire)
+    charge=0
+    range[index, 0<=$index<targets.size]#interval scan with index = index
+      (targets:index).receive($weights:index, $output)
+      end
+  end
+end
