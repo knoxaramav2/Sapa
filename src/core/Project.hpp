@@ -48,6 +48,8 @@ public:
   bool loadCNS();
   bool setCNS(string);
   bool hasCNS();
+
+
 };
 
 #endif

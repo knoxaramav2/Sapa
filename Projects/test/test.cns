@@ -13,7 +13,7 @@
 = debug true
 = title dev
 = version 1.0.0
-= lang c++
+= language c++
 = makeRTE false
 = makeCTM false
 = prsvSymb false

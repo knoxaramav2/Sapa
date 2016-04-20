@@ -56,14 +56,83 @@ Project::Project(string cnsName)
 
 void Project::fncImport(vector <string> list, string line)
 {
-  printf("%s%sfound\n", list[0].c_str(), registry.hasEntry(list[0])?" ":" not ");
+  if (list.size()==0)
+    return;
+
+  //printf("%s%sfound\n", list[0].c_str(), registry.hasEntry(list[0])?" ":" not ");
 
   //registry.update("imports", list, true, false);
+  registry.update("imports", (void*)&list, _list, true, false);
 }
 
 void Project::fncDatSet(vector <string> list, string line)
 {
+    if (list.size()!=2)
+      {
+        postError(line, "", ERR_EXPCT_ARG, -1, 0);
+        return;
+      }
 
+    regType r = registry.getType(list[0]);
+
+    if (r==_NA)
+      {
+        postError(line, "", ERR_REG_NOT_FOUND, -1, 0);
+        return;
+      }
+
+    switch(r)
+    {
+      case _bool:{
+      if (list.size()!=2)
+        {
+          postError(line, "", ERR_INV_CNS_ARG, -1, 0);
+          return;
+        }
+      if (list[1]!="true" && list[1]!="false")
+      {
+        postError(line, "", ERR_INV_CNS_ARG, -1, 0);
+        return;
+      }
+      bool arg=list[1]=="true"?true:false;
+      registry.update(list[0], (void*) &arg, _bool, true, false);
+      break;}
+      case _numeric:{
+      //printf("%s %s %d\n", list[0].c_str(), list[1].c_str(), isNumeric(list[1].c_str()));
+      if (list.size()!=2)
+        {
+          postError(line, "", ERR_INV_CNS_ARG, -1, 0);
+          return;
+        }
+      if (isNumeric(list[1].c_str())==0)
+      {
+        postError(line, "", ERR_INV_CNS_ARG, -1, 0);
+        return;
+      }
+      float arg=(float)atof(list[1].c_str());
+      registry.update(list[0], (void*) &arg, _numeric, true, false);
+      break;}
+      case _string:{
+      if (list.size()!=2)
+        {
+          postError(line, "", ERR_INV_CNS_ARG, -1, 0);
+          return;
+        }
+      string arg = list[1];
+      registry.update(list[0], (void*) &arg, _string, true, false);
+      break;}
+      case _list:{
+      list.erase(list.begin());
+      vector <string> arg = list;
+      registry.update(list[0], (void*) &arg, _string, true, false);
+      break;}
+      case _NA:
+        postError(line, "", ERR_INV_CNS_ARG, -1, 0);
+        return;
+      break;
+    }
+
+  //registry.update("imports", (void*)list, _list, true, false);
 }
 
 bool Project::loadCNS()
@@ -133,6 +202,7 @@ bool Project::loadCNS()
       {
         if (buffer.size()>0)
           arguments.push_back(buffer);
+        buffer.clear();
       }
       else if (c=='^' || c=='=')
       {
@@ -160,6 +230,13 @@ bool Project::loadCNS()
       }else
         buffer+=c;
     }
+
+    if (buffer.size()!=0)
+      {
+        arguments.push_back(buffer);
+        buffer.clear();
+      }
+
     //interpret command
     if (command==0 && arguments.size()!=0)
       postError(line, "", ERR_ARG_BFR_COM, -1, 0);

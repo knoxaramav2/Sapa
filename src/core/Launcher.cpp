@@ -98,9 +98,10 @@ int main(int argc, char**argv)
 
   prj.loadCNS();
 
-  prj.registry.printItems();
+  if(prj.cdbg)
+    prj.registry.printItems();
 
-  //fgetc(stdin);
+  //scan for symbols
 
 return 0;
 }

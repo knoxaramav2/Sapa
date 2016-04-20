@@ -22,6 +22,8 @@ addItem("title", true, _string);
 addItem("version", true, _string);
 addItem("language", true, _string);
 addItem("prsvSymb", true, _bool);
+addItem("makeRTE", true, _bool);
+addItem("makeCTM", true, _bool);
 
 addItem("RSP", true, _numeric);
 addItem("TDF", true, _numeric);
@@ -32,11 +34,12 @@ addItem("NTRAN", true, _numeric);
 addItem("imports", true, _list);
 }
 
-void Registry::addItem(string line, bool res, regType rt)
+//symbol, reserved access, registry type
+bool Registry::addItem(string line, bool res, regType rt)
 {
   if (hasEntry(line))
-  {//update existing
-
+  {
+    return false;
   }else
   {//new entry
     RegItem reg;
@@ -45,9 +48,6 @@ void Registry::addItem(string line, bool res, regType rt)
     reg.raw=line;
     reg.reserved=res;
     reg.type=rt;
-
-    printf("Add %s %llu\n", line.c_str(), FNV_1a(line.c_str()));
-    printf("Add %s %llu\n", line.c_str(), FNV_1a(line.c_str()));
 
     switch(rt)
     {
@@ -70,6 +70,8 @@ void Registry::addItem(string line, bool res, regType rt)
 
     listing.push_back(reg);
   }
+
+  return true;
 }
 
 regType Registry::getType(string id)
@@ -83,11 +85,61 @@ regType Registry::getType(string id)
   return _NA;
 }
 
-bool Registry::update(string str, void*, regType rtype, bool acc, bool rep)
+//symbol, data, registry type, reserved access, replace
+bool Registry::update(string str, void*info, regType rtype, bool res, bool rep)
 {
   //if entry not found, create new
+  if (!hasEntry(str))
+    addItem(str, res, rtype);
+  else
+  {
+    unsigned long long hash = FNV_1a(str.c_str());
 
-  return true;
+    for (unsigned x=0; x<listing.size(); ++x)
+      if(listing[x].hash==hash)
+        {
+          if (rtype!=listing[x].type)
+            {
+              postError(str, "", ERR_REG_NCMP_TYPE, -1, 0);
+              return false;
+            }else
+            {
+              switch(rtype)
+              {
+                case _bool:
+                *(bool*)listing[x].info = *(bool*) info;
+                break;
+                case _numeric:
+                *(float*)listing[x].info = *(float*) info;
+                break;
+                case _string:
+                *(string*)listing[x].info = *(string*) info;
+                break;
+                case _list:{
+                RegItem * ritem = &listing[x];
+
+                if (rep)
+                {
+                  *(vector <string>*)ritem->info=*(vector<string>*)info;
+                }else
+                {
+                  ((vector <string>*)ritem->info)->insert(((vector <string>*)ritem->info)->end(), ((vector<string>*)info)->begin(), ((vector<string>*)info)->end());
+                }
+                //if (rep)
+                //  *(vector <string>*)listing[x].info.insert(*(vector<string>*)listing[x].end(), *(vector<string>*)info.begin(), *(vector<string>*).end());
+                //else
+                //  *(vector <string>*)listing[x].info = *(vector <string>*) info;
+                }
+                break;
+                case _NA:
+
+                break;
+              }
+            }
+        }
+  }
+
+  return false;
 }
 
 void Registry::printItems()
@@ -129,7 +181,11 @@ void Registry::printItems()
           vector <string> list = *(vector <string>*)listing[x].info;
           valType="";
           for (unsigned x=0; x<list.size(); ++x)
-              valType+=list[x]+"\n";
+          {
+            //TODO make better way to display lists
+            valType+=list[x];
+          }
+
         }
       break;
       default:

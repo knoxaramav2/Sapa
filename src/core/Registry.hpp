@@ -35,7 +35,7 @@ public:
 
   Registry();
 
-  void addItem(string, bool, regType);
+  bool addItem(string, bool, regType);
   void printItems();
   bool hasEntry(string);
 
