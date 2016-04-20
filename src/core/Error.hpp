@@ -38,10 +38,19 @@ bool isFatal(bool);
 #define ERR_EXPCT_ARG     0x25//argument missing
 #define ERR_INV_CNS_ARG   0x26//invalid CNS param
 
+#define ERR_SETTING_REDEF 0x28//CNS system setting multiple values
+#define ERR_MULT_COM      0x29//multiple command statements on line
+#define ERR_NO_COM        0x2A//no command found
+#define ERR_ARG_BFR_COM   0x2B//data found before command
+
+//Registry0x41 - 0x60
+#define ERR_REG_NCMP_TYPE 0x41//incompatible update type
+#define ERR_RES_ENTRY     0x42//illegal access to reserved entry
+#define ERR_REG_NOT_FOUND 0x43//registry entry not found
+
 
 //Warnings
   //CMD 0x7D1 - 0x7E5
-
   //CNS 0x7E6 - 0x7F9
 #define WRN_UNBOUND_QUOTE 0x7E6
 

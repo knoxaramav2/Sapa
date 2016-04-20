@@ -67,10 +67,19 @@ void postError(string line, string msg, unsigned errCode, int errIndex, char prn
     case ERR_INV_OPT: printErr(errCode, "Invalid command line argument", -1, line + ' ' + msg); break;
 
     case ERR_NO_LANG: printErr(errCode, "No source language specified in CNS file", -1, ""); break;
-    case ERR_INV_CMD: printErr(errCode, "Invalid CNS setting", -1, msg); break;
+    case ERR_INV_CMD: printErr(errCode, "Invalid CNS setting", -1, line); break;
     case ERR_CNS_404: printErr(errCode, "Unable to open CNS file", -1, msg); break;
     case ERR_EXPCT_COM: printErr(errCode, "Expected statement", errIndex, line); break;
     case ERR_EXPCT_ARG: printErr(errCode, "Expected argument", errIndex, line); break;
+    case ERR_INV_CNS_ARG: printErr(errCode, "Invalid CNS argument", errIndex, line); break;
+    case ERR_SETTING_REDEF: printErr(errCode, "Mutliple CNS setting values for " + msg, errIndex, line); break;
+    case ERR_MULT_COM: printErr(errCode, "Multiple commands on CNS line", errIndex, line); break;
+    case ERR_NO_COM: printErr(errCode, "No command found", errIndex, line); break;
+    case ERR_ARG_BFR_COM: printErr(errCode, "Argument before command", errIndex, line); break;
+
+    case ERR_REG_NCMP_TYPE: printErr(errCode, "Incompatible registry entry", errIndex, line); break;
+    case ERR_RES_ENTRY: printErr(errCode, "Illegal reserved registry access", errIndex, line); break;
+    case ERR_REG_NOT_FOUND: printErr(errCode, "Symbol not found : " + msg, errIndex, line); break;
 
     //Warnings
     case WRN_UNBOUND_QUOTE: printWrn(errCode, "Unclosed string", errIndex, line); break;
