@@ -5,19 +5,48 @@
 #include <string>
 #include <vector>
 
-using namespace;
+#include "Project.hpp"
 
-enum lexType{
-  //Raw Types
-  _int, _deci, _string,
+using namespace std;
+
+//used for type and mathematical
+enum lexData
+{
+
+};
+
+enum lexCommand
+{
+
 };
 
 struct lexeme
 {
-  string value;
-  lexType attribute;
-  bool raw;//if registry check is required
-}
+  string raw;
+  lexData meta;
+
+};
+
+struct statement
+{
+  vector <lexeme> info;
+  lexData command;
+};
+
+struct declaration
+{
+
+};
+
+struct script
+{
+  string title;
+  string signature;
+};
+
+//scans file for symbols
+//returns symbolic signature
+string scanner(Project&);
 
 vector <lexeme> lexical(Project&);
 

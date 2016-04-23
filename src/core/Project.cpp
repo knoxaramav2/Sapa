@@ -35,8 +35,8 @@ Project::Project(string cnsName)
   localAddr.insert(localAddr.begin()+1, ':');
   #endif
 
-  localAddr = localAddr + "/../../Projects/";
-    cnsFile=cnsName;
+  localAddr = localAddr + "../../Projects/";
+  cnsFile=cnsName;
 
   //******Setup flags*******
 
@@ -52,6 +52,12 @@ Project::Project(string cnsName)
   //RTE
   ddbg=false;
   transSize=1;
+
+  c_scan=false;
+  c_lex=false;
+  c_build=false;
+
+  bLevel=_noBuild;
 }
 
 void Project::fncImport(vector <string> list, string line)
@@ -263,4 +269,14 @@ bool Project::setCNS(string src)
 bool Project::hasCNS()
 {
   return !cnsFile.empty();
+}
+
+string Project::getLAddr()
+{
+  return localAddr;
+}
+
+void Project::setBuildLevel(buildLevel bl)
+{
+  bLevel = bl>bLevel?bl:bLevel;
 }

@@ -1,0 +1,35 @@
+#*
+Built-in primitives
+
+>>>>>>>>>>Classes
+
+cell
+  float charge
+  float baseCharge
+  signal output
+  proc update
+  proc fire
+  link targets
+
+group
+  update
+
+>>>>>>>>>>Data types
+
+
+*#
+
+
+def cell:interneuron
+
+def proc:receive<void>(ntran sig, deci weight)
+
+
+end
+
+#override build-in interface 'start'
+override proc:start<void>()
+
+end
+
+end

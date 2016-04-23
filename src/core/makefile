@@ -3,7 +3,7 @@
 CC=g++
 CFLAGS= -Wall -std=c++14
 #LIBS= -lm -L/Libs -L. Libs/KNX_Library.a
-SRC=Launcher Error Project Registry
+SRC=Launcher Error Project Registry Scanner
 INCLUDES= -I.
 OUT=nrn
 CLEANEXT = o a

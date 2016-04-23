@@ -2,6 +2,7 @@
 #include "Error.hpp"
 #include "Info.hpp"
 #include "Project.hpp"
+#include "Compilation.hpp"
 
 #include "Libs/KNX_Libraries/KNX_String.h"
 
@@ -11,7 +12,16 @@ using namespace std;
 
 void help()
 {
-
+  printf("\n\n");
+  printf("-d           Enable debug printouts\n");
+  printf("-b           Enables full compilation\n");
+  printf("-m           Sets makefile for RTE compilation\n\
+  Implicitly enables RTE build\n");
+  printf("-c           Enable connectome build\n");
+  printf("-r           Enable runtime enviornment build\n");
+  printf("-v           Print version information\n");
+  printf("-s           Scan files and print signature string\n");
+  printf("-h           Print this dialogue\n\n");
 }
 
 void vInfo()
@@ -48,10 +58,11 @@ bool loadCMD(int argc, char**argv, Project&p)
         {
           case 'd': p.cdbg=true; break;
           case 'b': p.binaryComp=true; break;
-          case 'm': p.mkFile=true; break;
-          case 'c': p.makeCTM=true; break;
-          case 'r': p.makeRTE=true; break;
+          case 'm': p.mkFile=true; p.setBuildLevel(_Build); break;
+          case 'c': p.makeCTM=true; p.setBuildLevel(_Compile); break;
+          case 'r': p.makeRTE=true; p.setBuildLevel(_Compile); break;
           case 'v': vInfo(); break;
+          case 's': p.setBuildLevel(_Scanner);break;
           case 'h': help(); break;
           default:
           postError(argv[x], "", ERR_INV_CMD, -1, 0);
@@ -86,7 +97,7 @@ bool loadCMD(int argc, char**argv, Project&p)
   }
 
 
-  return p.hasCNS();
+  return p.hasCNS() || p.bLevel!=_noBuild;
 }
 
 int main(int argc, char**argv)
@@ -102,6 +113,7 @@ int main(int argc, char**argv)
     prj.registry.printItems();
 
   //scan for symbols
+  scanner(prj);
 
 return 0;
 }

@@ -14,3 +14,9 @@ run:
 .PHONY: dbg
 dbg:
 		bin_/core/nrn -d --src test
+
+.PHONY: clean
+clean:
+	for dir in $(SUBDIRS); do \
+	 $(MAKE) clean -C $$dir; \
+	done

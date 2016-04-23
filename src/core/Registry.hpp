@@ -40,6 +40,7 @@ public:
   bool hasEntry(string);
 
   regType getType(string);
+  RegItem * getItem(string);
 
   //update existing registry
   //entry name, data pointer, regType, res access, replace (true)/append(false)(only for list)

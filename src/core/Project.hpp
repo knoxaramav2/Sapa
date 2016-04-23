@@ -12,6 +12,8 @@ using namespace std;
 Defines project settings and constants
 */
 
+enum buildLevel{_noBuild, _Scanner, _Tokenize, _Compile, _Build};
+
 class Project
 {
   //location of executable
@@ -41,7 +43,14 @@ public:
   string projName;
   vector <string> srcFiles;
 
+  //Compilation level
+  bool c_scan;
+  bool c_lex;
+  bool c_build;
+
   Registry registry;
+
+  buildLevel bLevel;
 
   //establishes OS specific constants
   Project(string);
@@ -49,7 +58,9 @@ public:
   bool setCNS(string);
   bool hasCNS();
 
+  void setBuildLevel(buildLevel);
 
+  string getLAddr();
 };
 
 #endif

@@ -207,3 +207,14 @@ bool Registry::hasEntry(string nLine)
       return true;
   return false;
 }
+
+RegItem * Registry::getItem(string identifier)
+{
+  long long unsigned hash = FNV_1a(identifier.c_str());
+
+  for (size_t x=0; x<listing.size(); ++x)
+    if (listing[x].hash==hash)
+      return &listing[x];
+
+  return NULL;
+}

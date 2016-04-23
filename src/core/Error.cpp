@@ -81,6 +81,8 @@ void postError(string line, string msg, unsigned errCode, int errIndex, char prn
     case ERR_RES_ENTRY: printErr(errCode, "Illegal reserved registry access", errIndex, line); break;
     case ERR_REG_NOT_FOUND: printErr(errCode, "Symbol not found : " + msg, errIndex, line); break;
 
+    case ERR_IMRT_NOT_FOUND: printErr(errCode, "Import not found " + msg, errIndex, line); break;
+
     //Warnings
     case WRN_UNBOUND_QUOTE: printWrn(errCode, "Unclosed string", errIndex, line); break;
   }
