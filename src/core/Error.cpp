@@ -77,6 +77,8 @@ void postError(string line, string msg, unsigned errCode, int errIndex, char prn
     case ERR_NO_COM: printErr(errCode, "No command found", errIndex, line); break;
     case ERR_ARG_BFR_COM: printErr(errCode, "Argument before command", errIndex, line); break;
 
+    case ERR_MSS_PARAM: printErr(errCode, "Missing arguments", errIndex, line); break;
+
     case ERR_REG_NCMP_TYPE: printErr(errCode, "Incompatible registry entry", errIndex, line); break;
     case ERR_RES_ENTRY: printErr(errCode, "Illegal reserved registry access", errIndex, line); break;
     case ERR_REG_NOT_FOUND: printErr(errCode, "Symbol not found : " + msg, errIndex, line); break;

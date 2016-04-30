@@ -3,12 +3,12 @@
 CC=g++
 CFLAGS= -Wall -std=c++14
 #LIBS= -lm -L/Libs -L. Libs/KNX_Library.a
-SRC=Launcher Error Project Registry Scanner
+SRC=Launcher Error Project Registry Scanner LexUtil PreCompiler
 INCLUDES= -I.
 OUT=nrn
 CLEANEXT = o a
 BITVRS=64
-DBGFLAGS= -o -s --src test.cns
+DBGFLAGS= -s --src test.cns
 LIBS= -lm -LLibs/$(BITVRS)bit -lKNX_Library
 
 #configure for Linux and Windows
@@ -44,7 +44,7 @@ clean:
 
 .PHONY: run
 run: $(OUT)
-	$(RUNPATH) --src test.cns
+	$(RUNPATH) --src test.cns -s
 
 .PHONY: dbg
 dbg: $(OUT)

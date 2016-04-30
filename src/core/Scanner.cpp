@@ -48,8 +48,11 @@ string scanner(Project&prj)
     {
       string buffer;
       getline(ifile, buffer);
-      if (buffer.size()>0)
+      if (buffer.size()>0 && prj.cdbg)
         printf("%s\n", buffer.c_str());
+
+      vector <lexeme> pline = lexSplit(buffer, false);
+
     }
   }
 

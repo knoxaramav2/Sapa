@@ -12,36 +12,27 @@ using namespace std;
 //used for type and mathematical
 enum lexData
 {
+//command
+_lDcell, _lDGroup, _lDInt, _lDDec, _lDVoid, _lDproc, _lDLink, _lDTrans,
+_lDEnd
+//types
 
+//operators
 };
 
-enum lexCommand
-{
+#define isDelim(x) ((x<'a' || x>'z') && (x<'A' || x>'Z'))
 
-};
 
 struct lexeme
 {
   string raw;
   lexData meta;
-
 };
 
-struct statement
+struct rawscript
 {
-  vector <lexeme> info;
-  lexData command;
-};
-
-struct declaration
-{
-
-};
-
-struct script
-{
-  string title;
-  string signature;
+  string file;
+  string code;
 };
 
 //scans file for symbols
@@ -54,5 +45,9 @@ void syntactal(Project&, vector<lexeme>&);
 
 void semantic();
 
+//line to parse, true=search for symbols
+vector <lexeme> lexSplit(string, bool);
+
+string preProcessor(Project&);
 
 #endif

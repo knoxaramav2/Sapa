@@ -31,7 +31,7 @@ addItem("NGEN", true, _bool);
 addItem("NMAX", true, _numeric);
 addItem("NTRAN", true, _numeric);
 
-addItem("imports", true, _list);
+addItem("import", true, _list);
 }
 
 //symbol, reserved access, registry type
@@ -48,6 +48,7 @@ bool Registry::addItem(string line, bool res, regType rt)
     reg.raw=line;
     reg.reserved=res;
     reg.type=rt;
+    reg.toggle=false;
 
     switch(rt)
     {
@@ -60,11 +61,12 @@ bool Registry::addItem(string line, bool res, regType rt)
       case _string:
       reg.info = new string;
       break;
+      case _psuedo:
       case _list:
       reg.info = new vector <string>;
       break;
       default:
-
+      return false;
       break;
     }
 
@@ -91,53 +93,52 @@ bool Registry::update(string str, void*info, regType rtype, bool res, bool rep)
   //if entry not found, create new
   if (!hasEntry(str))
     addItem(str, res, rtype);
-  else
-  {
-    unsigned long long hash = FNV_1a(str.c_str());
 
-    for (unsigned x=0; x<listing.size(); ++x)
-      if(listing[x].hash==hash)
-        {
-          if (rtype!=listing[x].type)
+  unsigned long long hash = FNV_1a(str.c_str());
+
+  for (unsigned x=0; x<listing.size(); ++x)
+    if(listing[x].hash==hash)
+      {
+        if (rtype!=listing[x].type)
+          {
+            postError(str, "", ERR_REG_NCMP_TYPE, -1, 0);
+            return false;
+          }else
+          {
+            switch(rtype)
             {
-              postError(str, "", ERR_REG_NCMP_TYPE, -1, 0);
-              return false;
-            }else
-            {
-              switch(rtype)
+              case _bool:
+              *(bool*)listing[x].info = *(bool*) info;
+              break;
+              case _numeric:
+              *(float*)listing[x].info = *(float*) info;
+              break;
+              case _string:
+              *(string*)listing[x].info = *(string*) info;
+              break;
+              case _psuedo:
+              case _list:{
+              RegItem * ritem = &listing[x];
+
+              if (rep)
               {
-                case _bool:
-                *(bool*)listing[x].info = *(bool*) info;
-                break;
-                case _numeric:
-                *(float*)listing[x].info = *(float*) info;
-                break;
-                case _string:
-                *(string*)listing[x].info = *(string*) info;
-                break;
-                case _list:{
-                RegItem * ritem = &listing[x];
-
-                if (rep)
-                {
-                  *(vector <string>*)ritem->info=*(vector<string>*)info;
-                }else
-                {
-                  ((vector <string>*)ritem->info)->insert(((vector <string>*)ritem->info)->end(), ((vector<string>*)info)->begin(), ((vector<string>*)info)->end());
-                }
-                //if (rep)
-                //  *(vector <string>*)listing[x].info.insert(*(vector<string>*)listing[x].end(), *(vector<string>*)info.begin(), *(vector<string>*).end());
-                //else
-                //  *(vector <string>*)listing[x].info = *(vector <string>*) info;
-                }
-                break;
-                case _NA:
-
-                break;
+                *(vector <string>*)ritem->info=*(vector<string>*)info;
+              }else
+              {
+                ((vector <string>*)ritem->info)->insert(((vector <string>*)ritem->info)->end(), ((vector<string>*)info)->begin(), ((vector<string>*)info)->end());
               }
+              //if (rep)
+              //  *(vector <string>*)listing[x].info.insert(*(vector<string>*)listing[x].end(), *(vector<string>*)info.begin(), *(vector<string>*).end());
+              //else
+              //  *(vector <string>*)listing[x].info = *(vector <string>*) info;
+              }
+              break;
+              case _NA:
+
+              break;
             }
-        }
-  }
+          }
+      }
 
   return false;
 }
@@ -174,6 +175,7 @@ void Registry::printItems()
       if (listing[x].info!=NULL)
         valType=*(string*)listing[x].info;
       break;
+      case _psuedo:
       case _list:
       strType = "list";
       if (listing[x].info!=NULL)
@@ -208,6 +210,29 @@ bool Registry::hasEntry(string nLine)
   return false;
 }
 
+bool Registry::toggleItem(string title)
+{
+  RegItem * ri = getItem(title);
+  if (ri==NULL)
+    return false;
+
+  ri->toggle=!ri->toggle;
+
+  return true;
+}
+
+bool Registry::setItem(string title)
+{
+  getItem(title)->toggle=true;
+  return true;
+}
+
+bool Registry::unsetItem(string title)
+{
+  getItem(title)->toggle=false;
+  return true;
+}
+
 RegItem * Registry::getItem(string identifier)
 {
   long long unsigned hash = FNV_1a(identifier.c_str());
@@ -217,4 +242,15 @@ RegItem * Registry::getItem(string identifier)
       return &listing[x];
 
   return NULL;
+}
+
+vector <RegItem*> Registry::getAllOfType(regType rt)
+{
+  vector <RegItem*> ret;
+
+  for (size_t x=0; x<listing.size(); ++x)
+    if (listing[x].type==rt)
+      ret.push_back(&listing[x]);
+
+  return ret;
 }

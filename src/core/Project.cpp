@@ -68,7 +68,7 @@ void Project::fncImport(vector <string> list, string line)
   //printf("%s%sfound\n", list[0].c_str(), registry.hasEntry(list[0])?" ":" not ");
 
   //registry.update("imports", list, true, false);
-  registry.update("imports", (void*)&list, _list, true, false);
+  registry.update("import", (void*)&list, _list, true, false);
 }
 
 void Project::fncDatSet(vector <string> list, string line)
@@ -126,6 +126,15 @@ void Project::fncDatSet(vector <string> list, string line)
         }
       string arg = list[1];
       registry.update(list[0], (void*) &arg, _string, true, false);
+      break;}
+      case _psuedo:{
+      if (list.size()!=2)
+        {
+          postError(line, "", ERR_INV_CNS_ARG, -1, 0);
+          return;
+        }
+      string arg = list[1];
+      registry.update(list[0], (void*) &arg, _psuedo, true, false);
       break;}
       case _list:{
       list.erase(list.begin());
@@ -279,4 +288,9 @@ string Project::getLAddr()
 void Project::setBuildLevel(buildLevel bl)
 {
   bLevel = bl>bLevel?bl:bLevel;
+}
+
+string Project::formatPath(string fname, string ext)
+{
+  return localAddr+cnsFile+"/"+fname+ext;
 }

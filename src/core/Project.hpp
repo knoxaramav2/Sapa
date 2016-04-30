@@ -12,7 +12,7 @@ using namespace std;
 Defines project settings and constants
 */
 
-enum buildLevel{_noBuild, _Scanner, _Tokenize, _Compile, _Build};
+enum buildLevel{_noBuild, _preComp, _Scanner, _Tokenize, _Compile, _Build};
 
 class Project
 {
@@ -61,6 +61,8 @@ public:
   void setBuildLevel(buildLevel);
 
   string getLAddr();
+
+  string formatPath(string, string);
 };
 
 #endif

@@ -14,7 +14,7 @@ enum regType{
   //data type
   _NA,
   _bool, _numeric, _string,
-  _list
+  _list, _psuedo
 
 };
 
@@ -24,6 +24,7 @@ struct RegItem
   string raw;
   regType type;
   bool reserved:1;//immutable if true
+  bool toggle;//general purpose toggle
   void*info;
 };
 
@@ -38,9 +39,13 @@ public:
   bool addItem(string, bool, regType);
   void printItems();
   bool hasEntry(string);
+  bool toggleItem(string);
+  bool setItem(string);
+  bool unsetItem(string);
 
   regType getType(string);
   RegItem * getItem(string);
+  vector <RegItem *> getAllOfType(regType);
 
   //update existing registry
   //entry name, data pointer, regType, res access, replace (true)/append(false)(only for list)

@@ -1,35 +1,21 @@
 #*
-Built-in primitives
-
->>>>>>>>>>Classes
-
-cell
-  float charge
-  float baseCharge
-  signal output
-  proc update
-  proc fire
-  link targets
-
-group
-  update
-
->>>>>>>>>>Data types
-
-
+Defines transmitter
 *#
 
+?psuedo signal:0 eHi
+?psuedo signal:1 eMd
+?psuedo signal:2 eLo
+?psuedo signal:3 iHi
+?psuedo signal:4 iMd
+?psuedo signal:5 iLo
 
-def cell:interneuron
+?import src2
 
-def proc:receive<void>(ntran sig, deci weight)
+#Basic cell definition
 
+new obj<cell>
+  deci charge=0;
+  deci decay=0;
 
-end
-
-#override build-in interface 'start'
-override proc:start<void>()
-
-end
-
-end
+  ntran output;
+end;

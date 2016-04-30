@@ -9,11 +9,11 @@ subdirs:
 
 .PHONY: run
 run:
-		bin_/core/nrn --src test
+		bin_/core/nrn --src test -p
 
 .PHONY: dbg
 dbg:
-		bin_/core/nrn -d --src test
+		bin_/core/nrn -d --src test -p
 
 .PHONY: clean
 clean:

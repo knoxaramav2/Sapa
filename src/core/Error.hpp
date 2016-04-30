@@ -51,6 +51,9 @@ bool isFatal(bool);
 //Scanner 0x61-0x80
 #define ERR_IMRT_NOT_FOUND    0x61//imported source not found
 
+//NRN 0x81 - 0x100
+#define ERR_MSS_PARAM         0x81//function missing parameters
+
 //Warnings
   //CMD 0x7D1 - 0x7E5
   //CNS 0x7E6 - 0x7F9

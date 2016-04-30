@@ -20,7 +20,7 @@ void help()
   printf("-c           Enable connectome build\n");
   printf("-r           Enable runtime enviornment build\n");
   printf("-v           Print version information\n");
-  printf("-s           Scan files and print signature string\n");
+  printf("-p           Enable Precompiler\n");
   printf("-h           Print this dialogue\n\n");
 }
 
@@ -62,7 +62,7 @@ bool loadCMD(int argc, char**argv, Project&p)
           case 'c': p.makeCTM=true; p.setBuildLevel(_Compile); break;
           case 'r': p.makeRTE=true; p.setBuildLevel(_Compile); break;
           case 'v': vInfo(); break;
-          case 's': p.setBuildLevel(_Scanner);break;
+          case 'p': p.setBuildLevel(_preComp); break;
           case 'h': help(); break;
           default:
           postError(argv[x], "", ERR_INV_CMD, -1, 0);
@@ -109,11 +109,14 @@ int main(int argc, char**argv)
 
   prj.loadCNS();
 
+  //scan for symbols
+  if (prj.bLevel>=_preComp)
+    preProcessor(prj);
+  if (prj.bLevel>=_Scanner)
+    scanner(prj);
+
   if(prj.cdbg)
     prj.registry.printItems();
-
-  //scan for symbols
-  scanner(prj);
 
 return 0;
 }
