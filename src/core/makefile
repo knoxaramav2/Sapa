@@ -3,7 +3,7 @@
 CC=g++
 CFLAGS= -Wall -std=c++14
 #LIBS= -lm -L/Libs -L. Libs/KNX_Library.a
-SRC=Launcher Error Project Registry Scanner LexUtil PreCompiler
+SRC=Launcher Error Project Registry Scanner LexUtil PreCompiler Lexical
 INCLUDES= -I.
 OUT=nrn
 CLEANEXT = o a

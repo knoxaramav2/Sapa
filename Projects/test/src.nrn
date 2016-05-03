@@ -11,11 +11,23 @@ Defines transmitter
 
 ?import src2
 
-#Basic cell definition
+#*Basic interneural cell definition
+'cell' and 'group' structures are interfaces
 
-new obj<cell>
-  deci charge=0;
-  deci decay=0;
+cells have the virtual methods:
+update()
+receiver()
+and members
+deci charge
+*#
 
-  ntran output;
-end;
+new inter
+[
+subclass=cell;
+
+  override update
+  [
+
+  ]
+
+]

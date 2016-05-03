@@ -290,6 +290,7 @@ string preProcessor(Project&prj)
 
   if (prj.cdbg)
   {
+    printf("Precomp File.....\n\n");
     printf("%s\n", rcode.c_str());
     //prj.registry.printItems();
   }

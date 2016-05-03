@@ -39,7 +39,7 @@ struct rawscript
 //returns symbolic signature
 string scanner(Project&);
 
-vector <lexeme> lexical(Project&);
+vector <lexeme> lexical(Project&, string&);
 
 void syntactal(Project&, vector<lexeme>&);
 
