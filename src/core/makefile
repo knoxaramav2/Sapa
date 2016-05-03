@@ -16,7 +16,7 @@ ifeq ($(shell uname), Linux)
 	FixPath = $1
 	PLATFORM = -D__LINUX
 	OSMODE = -DBITMODE=$(BITVRS)
-	EXPORT_PTH=../../bin_/core/
+	EXPORT_PTH=../../
 	EXT=
 	RUNPATH=./$(EXPORT_PTH)$(OUT)
 else
@@ -24,7 +24,7 @@ else
 	FixPath = $(subst /,\,$1)
 	PLATFORM = -D__WINDOWS
 	OSMODE = -DBITMODE=$(BITVRS)
-	EXPORT_PTH=../../bin_/core/
+	EXPORT_PTH=../../
 	EXT=.exe
 	RUNPATH=$(EXPORT_PTH)$(OUT)
 endif

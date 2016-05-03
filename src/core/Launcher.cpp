@@ -7,6 +7,7 @@
 #include "Libs/KNX_Libraries/KNX_String.h"
 
 #include <stdio.h>
+#include <chrono>
 
 using namespace std;
 
@@ -14,6 +15,9 @@ void help()
 {
   printf("\n\n");
   printf("-d           Enable debug printouts\n");
+  printf("-w           Suppress warnings\n");
+  printf("-e           Suppress errors\n");
+  printf("-a           Fail compilation on warning or error\n");
   printf("-b           Enables full compilation\n");
   printf("-m           Sets makefile for RTE compilation\n\
   Implicitly enables RTE build\n");
@@ -57,6 +61,9 @@ bool loadCMD(int argc, char**argv, Project&p)
         switch(argv[x][1])
         {
           case 'd': p.cdbg=true; break;
+          case 'w': p.noWarn=true; break;
+          case 'e': p.noErr=true; break;
+          case 'a': p.vEW=true; break;
           case 'b': p.binaryComp=true; break;
           case 'm': p.mkFile=true; p.setBuildLevel(_Build); break;
           case 'c': p.makeCTM=true; p.setBuildLevel(_Compile); break;
@@ -110,13 +117,20 @@ int main(int argc, char**argv)
   prj.loadCNS();
 
   //scan for symbols
-  if (prj.bLevel>=_preComp)
+  if (prj.bLevel>=_preComp && !isFatal(prj.vEW))
     preProcessor(prj);
-  if (prj.bLevel>=_Scanner)
+  if (prj.bLevel>=_Scanner && !isFatal(prj.vEW))
     scanner(prj);
 
   if(prj.cdbg)
     prj.registry.printItems();
+
+  ErrorReport();
+
+  if (!isFatal(prj.vEW))
+  {
+    printf("Compilation complete\n");
+  }
 
 return 0;
 }

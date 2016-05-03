@@ -33,9 +33,11 @@ Project::Project(string cnsName)
   localAddr.erase(localAddr.begin(), localAddr.begin()+10);
   localAddr.erase(localAddr.end()-3, localAddr.end());
   localAddr.insert(localAddr.begin()+1, ':');
+  #else
+  localAddr.erase(localAddr.end()-3, localAddr.end());
   #endif
 
-  localAddr = localAddr + "../../Projects/";
+  localAddr = localAddr + "/Projects/";
   cnsFile=cnsName;
 
   //******Setup flags*******
@@ -43,6 +45,7 @@ Project::Project(string cnsName)
   //compilation
   ddbg=false;
   cdbg=false;
+  vEW=false;
   makeCTM=false;
   makeRTE=false;
   binaryComp=false;
@@ -154,6 +157,8 @@ bool Project::loadCNS()
 {
   //parse CNS file
   ifstream ifile (localAddr+cnsFile+"/"+cnsFile+".cns");
+
+  //printf(">> %s\n", string(localAddr+cnsFile+"/"+cnsFile+".cns").c_str());
 
   if (!ifile)
   {

@@ -237,6 +237,14 @@ string preProcessor(Project&prj)
       rcode.erase(rcode.begin()+x,rcode.begin()+x+1);
       --x;
     }
+
+    //remove annoying additional lines
+    if (rcode[x]=='\n' && rcode[x+1]=='\n')
+    {
+      rcode.erase(rcode.begin()+x);
+      --len;
+      --x;
+    }
   }
 
   //Perform psuedo operations

@@ -31,10 +31,11 @@ public:
   otherwise, use default compilation settings*/
   bool noWarn;
   bool noErr;
+  bool vEW;//Error/warning volatile
 
   //RTE settings
   bool ddbg;//RTE prints step information (debugging mostly)
-  bool cdbg;//debugging features in compiled version
+  bool cdbg;//compilation debug printouts
   bool makeCTM;
   bool makeRTE;
   unsigned transSize;
