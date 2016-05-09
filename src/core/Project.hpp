@@ -12,7 +12,7 @@ using namespace std;
 Defines project settings and constants
 */
 
-enum buildLevel{_noBuild, _preComp, _Scanner, _Tokenize, _Compile, _Build};
+enum buildLevel{_noBuild, _preComp, _Lexical, _Syntactic, _Compile, _Build};
 
 class Project
 {
@@ -39,6 +39,7 @@ public:
   bool makeCTM;
   bool makeRTE;
   unsigned transSize;
+  bool useLclDir;//uses sapa project directory path
 
   //other
   string projName;

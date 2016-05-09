@@ -51,7 +51,6 @@ Project::Project(string cnsName)
   binaryComp=false;
   mkFile=false;
 
-
   //RTE
   ddbg=false;
   transSize=1;
@@ -61,6 +60,7 @@ Project::Project(string cnsName)
   c_build=false;
 
   bLevel=_noBuild;
+  useLclDir=false;
 }
 
 void Project::fncImport(vector <string> list, string line)
@@ -297,5 +297,7 @@ void Project::setBuildLevel(buildLevel bl)
 
 string Project::formatPath(string fname, string ext)
 {
+  if (!useLclDir)
+    return fname+ext;
   return localAddr+cnsFile+"/"+fname+ext;
 }

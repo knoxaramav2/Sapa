@@ -1,6 +1,6 @@
 #Compiles entire SAPA project
 
-SUBDIRS = src/core/
+SUBDIRS = src/core/ src/SA/
 
 subdirs:
 	for dir in $(SUBDIRS); do \
@@ -9,11 +9,15 @@ subdirs:
 
 .PHONY: run
 run:
-		./nrn --src test -p
+		./nrn --src test -p -l -b
 
 .PHONY: dbg
 dbg:
-		./nrn -d --src test -p
+		./nrn -d --src test -p -l -b
+
+.PHONY: sapa
+sapa:
+		./sapa dev.ctm
 
 .PHONY: clean
 clean:

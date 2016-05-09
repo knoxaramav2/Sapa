@@ -21,13 +21,22 @@ and members
 deci charge
 *#
 
-new inter
+new cell
 [
-subclass=cell;
+name="intr";#interneural cell
+#class=... Extended class
+#declare new elements
 
-  override update
+new float[name="thresh";]
+new float[name="equil";]
+
+#initialize elements
+override init()
   [
+    #cell constructor
+    charge=0;
 
+    thresh=-70;
+    equil=0.9;
   ]
-
 ]

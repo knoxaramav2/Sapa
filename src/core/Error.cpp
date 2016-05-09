@@ -78,12 +78,20 @@ void postError(string line, string msg, unsigned errCode, int errIndex, char prn
     case ERR_ARG_BFR_COM: printErr(errCode, "Argument before command", errIndex, line); break;
 
     case ERR_MSS_PARAM: printErr(errCode, "Missing arguments", errIndex, line); break;
+    case ERR_UNREC_CHAR: printErr(errCode, "Unrecognized character", errIndex, line); break;
 
     case ERR_REG_NCMP_TYPE: printErr(errCode, "Incompatible registry entry", errIndex, line); break;
     case ERR_RES_ENTRY: printErr(errCode, "Illegal reserved registry access", errIndex, line); break;
     case ERR_REG_NOT_FOUND: printErr(errCode, "Symbol not found : " + msg, errIndex, line); break;
 
     case ERR_IMRT_NOT_FOUND: printErr(errCode, "Import not found " + msg, errIndex, line); break;
+
+    //case ERR_MSS_PARAM: printErr(errCode, "Missing argument " + msg, errIndex, line); break;
+    //case ERR_UNREC_CHAR: printErr(errCode, "Unrecognized character " + msg, errIndex, line); break;
+    case ERR_ILL_OPERATOR: printErr(errCode, "Unrecognized operator " + msg, errIndex, line); break;
+    case ERR_EMPTY_CHAR: printErr(errCode, "Empty character " + msg, errIndex, line); break;
+    case ERR_OVER_CHAR: printErr(errCode, "Excessive character " + msg, errIndex, line); break;
+
 
     //Warnings
     case WRN_UNBOUND_QUOTE: printWrn(errCode, "Unclosed string", errIndex, line); break;

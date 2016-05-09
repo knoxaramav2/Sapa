@@ -48,15 +48,18 @@ bool isFatal(bool);
 #define ERR_RES_ENTRY         0x42//illegal access to reserved entry
 #define ERR_REG_NOT_FOUND     0x43//registry entry not found
 
-//Scanner 0x61-0x80
+//Precompiler 0x61-0x80
 #define ERR_IMRT_NOT_FOUND    0x61//imported source not found
 
-//NRN 0x81 - 0x100
+//Lexical 0x81 - 0x100
 #define ERR_MSS_PARAM         0x81//function missing parameters
+#define ERR_UNREC_CHAR        0x82//Unrecognized character
+#define ERR_ILL_OPERATOR      0x83//illegal operator
+#define ERR_EMPTY_CHAR        0x84//empty character
+#define ERR_OVER_CHAR         0x85//multiple character
 
 //Warnings
   //CMD 0x7D1 - 0x7E5
   //CNS 0x7E6 - 0x7F9
 #define WRN_UNBOUND_QUOTE     0x7E6
-
 #endif

@@ -26,6 +26,7 @@ void help()
   printf("-v           Print version information\n");
   printf("-p           Enable Precompiler\n");
   printf("-h           Print this dialogue\n\n");
+  printf("-l           Use Sapa local project directory instead of caller path\n");
 }
 
 void vInfo()
@@ -64,13 +65,14 @@ bool loadCMD(int argc, char**argv, Project&p)
           case 'w': p.noWarn=true; break;
           case 'e': p.noErr=true; break;
           case 'a': p.vEW=true; break;
-          case 'b': p.binaryComp=true; break;
+          case 'b': p.binaryComp=true; p.setBuildLevel(_Build); break;
           case 'm': p.mkFile=true; p.setBuildLevel(_Build); break;
           case 'c': p.makeCTM=true; p.setBuildLevel(_Compile); break;
           case 'r': p.makeRTE=true; p.setBuildLevel(_Compile); break;
           case 'v': vInfo(); break;
           case 'p': p.setBuildLevel(_preComp); break;
           case 'h': help(); break;
+          case 'l': p.useLclDir=true; break;
           default:
           postError(argv[x], "", ERR_INV_CMD, -1, 0);
         }
@@ -116,11 +118,15 @@ int main(int argc, char**argv)
 
   prj.loadCNS();
 
+  if (prj.cdbg)
+    printf("Compilation mode (%d)\n", prj.bLevel);
+
   //scan for symbols
+  string rCode;
   if (prj.bLevel>=_preComp && !isFatal(prj.vEW))
-    preProcessor(prj);
-  if (prj.bLevel>=_Scanner && !isFatal(prj.vEW))
-    scanner(prj);
+    rCode=preProcessor(prj);
+  if (prj.bLevel>=_Lexical && !isFatal(prj.vEW))
+    lexical(prj, rCode);
 
   if(prj.cdbg)
     prj.registry.printItems();
