@@ -31,7 +31,17 @@ _lAnd, _lNand, _lOr, _lNor, _lXNor, _lXOr, _lNot,
 //collec
 _lBodyOpen, _lBodyClose, _lArgOpen, _lArgClose, _lListOpen, _lListClose, _lIndex, _lNItem,
 //misc
-_lRef, _lInc, _lDec, _lEnd
+_lRef, _lInc, _lDec, _lEnd,
+//keywords
+_kwNew, _kwOverride, _kwDelete, _kwLoop, _kwReturn, _kwBreak,
+_kwCell, _kwGroup,
+_kwIf, _kwElse,
+_kwDisplay, _kwGetLine,
+_kwVirtual, _kwConst,
+_kwPlot, _kwMatrix, _kwRing, _kwPath,
+_kwRand, _kwLog, _kwFlush, _kwAppend,
+_kwPause,
+_kwFloat, _kwInt
 };
 
 #define isDelim(x) ((x<'a' || x>'z') && (x<'A' || x>'Z') && (x<'0' || x>'9') && x!='_')
@@ -68,7 +78,7 @@ vector <lexeme> lexical(Project&, string&);
 
 void syntactal(Project&, vector<lexeme>&);
 
-void semantic();
+void semantic(Project&, vector<lexeme>&);
 
 //line to parse, true=search for symbols
 vector <lexeme> lexSplit(string, bool);

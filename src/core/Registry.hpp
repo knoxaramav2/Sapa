@@ -5,6 +5,8 @@
 Defines searchable table for all symbols and fields
 */
 
+#include "Bio.hpp"
+
 #include <string>
 #include <vector>
 
@@ -14,7 +16,8 @@ enum regType{
   //data type
   _NA,
   _bool, _numeric, _string,
-  _list, _psuedo
+  _list, _psuedo,
+  _cell, _group
 
 };
 

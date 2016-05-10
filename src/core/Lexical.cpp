@@ -86,6 +86,43 @@ lexeme getOperator(char l, char r, bool&compound)
   return lexeme("", lxd);
 }
 
+lexeme getSym(string&str, size_t l, size_t r, Project&prj)
+{
+  lexData lxd=_lNa;
+  string substr(str.begin()+l, str.begin()+r);
+
+  if (substr=="new") lxd=_kwNew;
+  else if (substr=="override") lxd=_kwOverride;
+  else if (substr=="delete") lxd=_kwDelete;
+  else if (substr=="loop") lxd=_kwLoop;
+  else if (substr=="return") lxd=_kwReturn;
+  else if (substr=="break") lxd=_kwBreak;
+  else if (substr=="cell") lxd=_kwCell;
+  else if (substr=="group") lxd=_kwGroup;
+  else if (substr=="if") lxd=_kwIf;
+  else if (substr=="else") lxd=_kwElse;
+  else if (substr=="display") lxd=_kwDisplay;
+  else if (substr=="getline") lxd=_kwGetLine;
+  else if (substr=="virtual") lxd=_kwVirtual;
+  else if (substr=="const") lxd=_kwConst;
+  else if (substr=="plot") lxd=_kwPlot;
+  else if (substr=="matrix") lxd=_kwMatrix;
+  else if (substr=="ring") lxd=_kwRing;
+  else if (substr=="path") lxd=_kwPath;
+  else if (substr=="rand") lxd=_kwRand;
+  else if (substr=="log") lxd=_kwLog;
+  else if (substr=="flush") lxd=_kwFlush;
+  else if (substr=="append") lxd=_kwAppend;
+  else if (substr=="pause") lxd=_kwPause;
+  else if (substr=="float") lxd=_kwFloat;
+  else if (substr=="int") lxd=_kwInt;
+
+  if (lxd!=_lNa)
+    substr="";
+
+  return lexeme(substr, lxd);
+}
+
 vector <lexeme> lexical(Project&prj, string&code)
 {
   printf("Performing lexical analysis...\n");
@@ -172,8 +209,8 @@ vector <lexeme> lexical(Project&prj, string&code)
           //else printf("%c", t);
         }
         //printf("]\n");
-
-        seq.push_back(lexeme(string(code.begin()+x, code.begin()+offset), _lSymbol));
+        seq.push_back(getSym(code, x, offset, prj));
+        //seq.push_back(lexeme(string(code.begin()+x, code.begin()+offset), _lSymbol));
         x=offset-1;
       }
     }

@@ -74,6 +74,7 @@ void Project::fncImport(vector <string> list, string line)
   registry.update("import", (void*)&list, _list, true, false);
 }
 
+//I have completely forgotten what this does
 void Project::fncDatSet(vector <string> list, string line)
 {
     if (list.size()!=2)
@@ -147,6 +148,9 @@ void Project::fncDatSet(vector <string> list, string line)
       case _NA:
         postError(line, "", ERR_INV_CNS_ARG, -1, 0);
         return;
+      break;
+      default:
+
       break;
     }
 

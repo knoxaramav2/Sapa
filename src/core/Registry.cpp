@@ -65,6 +65,12 @@ bool Registry::addItem(string line, bool res, regType rt)
       case _list:
       reg.info = new vector <string>;
       break;
+      case _cell:
+      reg.info = new cell;
+      break;
+      case _group:
+      reg.info = new group;
+      break;
       default:
       return false;
       break;
@@ -127,10 +133,44 @@ bool Registry::update(string str, void*info, regType rtype, bool res, bool rep)
               {
                 ((vector <string>*)ritem->info)->insert(((vector <string>*)ritem->info)->end(), ((vector<string>*)info)->begin(), ((vector<string>*)info)->end());
               }
-              //if (rep)
-              //  *(vector <string>*)listing[x].info.insert(*(vector<string>*)listing[x].end(), *(vector<string>*)info.begin(), *(vector<string>*).end());
-              //else
-              //  *(vector <string>*)listing[x].info = *(vector <string>*) info;
+              }
+              break;
+              case _cell:
+              {
+                cell * item = (cell*)(listing[x].info);
+                cell * ritem = (cell*)info;
+                if (item->protect && rep)
+                {
+                  postError("", "cell ["+item->name+"] ", ERR_PRTC_OVERRIDE, -1, 2);
+                  return false;
+                }else if (item->overriden && rep)
+                {
+                  postError("", "cell ["+item->name+"] ", WRN_MULT_OVERRIDE, -1, 2);
+                }else if (rep)
+                {
+                  ritem->overriden=true;
+                }
+
+                listing[x].info = info;
+              }
+              break;
+              case _group:
+              {
+                group * item = (group*)(listing[x].info);
+                group * ritem = (group*)info;
+                if (item->protect && rep)
+                {
+                  postError("", "group ["+item->name+"] ", ERR_PRTC_OVERRIDE, -1, 2);
+                  return false;
+                }else if (item->overriden && rep)
+                {
+                  postError("", "group ["+item->name+"] ", WRN_MULT_OVERRIDE, -1, 2);
+                }else if (rep)
+                {
+                  ritem->overriden=true;
+                }
+
+                listing[x].info = info;
               }
               break;
               case _NA:
@@ -140,7 +180,7 @@ bool Registry::update(string str, void*info, regType rtype, bool res, bool rep)
           }
       }
 
-  return false;
+  return true;
 }
 
 void Registry::printItems()

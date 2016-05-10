@@ -123,10 +123,13 @@ int main(int argc, char**argv)
 
   //scan for symbols
   string rCode;
+  vector <lexeme> lxstr;
   if (prj.bLevel>=_preComp && !isFatal(prj.vEW))
     rCode=preProcessor(prj);
   if (prj.bLevel>=_Lexical && !isFatal(prj.vEW))
-    lexical(prj, rCode);
+    lxstr=lexical(prj, rCode);
+  if (prj.bLevel>=_Syntactic && !isFatal(prj.vEW))
+    semantic(prj, lxstr);
 
   if(prj.cdbg)
     prj.registry.printItems();

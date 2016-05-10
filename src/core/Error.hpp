@@ -58,8 +58,17 @@ bool isFatal(bool);
 #define ERR_EMPTY_CHAR        0x84//empty character
 #define ERR_OVER_CHAR         0x85//multiple character
 
+//Semantic 0x101 - 0x120
+#define ERR_PRTC_OVERRIDE     0x101//overide on protected object
+
 //Warnings
   //CMD 0x7D1 - 0x7E5
   //CNS 0x7E6 - 0x7F9
 #define WRN_UNBOUND_QUOTE     0x7E6
+
+  //Lexical 0x800 - 0x820
+
+  //Semantic 0x821 - 0x840
+#define WRN_MULT_OVERRIDE     0x821
+
 #endif
