@@ -1,9 +1,10 @@
 # Compiles neurOn compiler
 
 CC=g++
-CFLAGS= -Wall -std=c++14
+VERSION=\"1.0.0\"
+CFLAGS= -DVERSION=$(VERSION) -Wall -std=c++14
 #LIBS= -lm -L/Libs -L. Libs/KNX_Library.a
-SRC=Launcher Error Project Registry Scanner LexUtil PreCompiler Lexical Semantic
+SRC=Launcher
 INCLUDES= -I.
 OUT=nrn
 CLEANEXT = o a
