@@ -1,0 +1,8 @@
+	Each directory in this folder is scanned for information that enables certain support features for that particular language.
+	
+	Each language requires a mRNA file (Poorly thought out novelty extensions are 50% of why I do this) that describes how the internal encoded langauge is to be decipehered into the appropriate language.
+
+	In addition, this is where the default makefile templates are stored. Unless a makefile is present in the directory of the target project when binary compilation is specified, the makefiles in these directories will be used to generate makefiles in the target directories. Modifying these files will change the default settings of the generated makefile.
+
+	
+	
