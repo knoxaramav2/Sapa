@@ -42,10 +42,12 @@ void vInfo()
   printf("version :%s %d-bit <%s>\n", VERSION, BITMODE, OS.c_str());
 }
 
+//load command line options
 bool loadCMD(int argc, char**argv)
 {
+  
 
-  return true;
+  return false;
 }
 
 int main(int argc, char**argv)
