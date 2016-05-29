@@ -27,21 +27,21 @@ This long list defines the 1.0.0 encoding values
 #define _ROOT         0x16
 
 //not keywords
-#define _AND          0x1A
-#define _OR           0x1B
-#define _NOT          0x1C
-#define _NAND         0x1D
-#define _NOR          0x1E
-#define _XOR          0x1F
-#define _XNOR         0x20
-#define _EQU          0x21
-#define _NEQU         0x22
-#define _GTR          0x23
-#define _LSS          0x24
-#define _GTREQU       0x25
-#define _LSSEQU       0x26
-#define _WITHIN       0x27
-#define _OUTSIDE      0x28
+#define _iAND         0x1A
+#define _iOR          0x1B
+#define _iNOT         0x1C
+#define _iNAND        0x1D
+#define _iNOR         0x1E
+#define _iXOR         0x1F
+#define _iXNOR        0x20
+#define _iEQU         0x21
+#define _iNEQU        0x22
+#define _iGTR         0x23
+#define _iLSS         0x24
+#define _iGTREQU      0x25
+#define _iLSSEQU      0x26
+#define _iWITHIN      0x27
+#define _iOUTSIDE     0x28
 
 //i prefix represents identifier
 #define _iCELL        0x30
@@ -59,11 +59,11 @@ This long list defines the 1.0.0 encoding values
 #define _iOUTDEVICE   0x3C
 #define _iINDEVICE    0x3D
 
-#define _CONST        0x40
-#define _OVERRIDE     0x41
-#define _NEW          0x42
-#define _DELETE       0x43
-#define _PERSIST      0x44
+#define _kCONST        0x40
+#define _kOVERRIDE     0x41
+#define _kNEW          0x42
+#define _kDELETE       0x43
+#define _kPERSIST      0x44
 
 #define _kCELL        0x4A
 #define _kGROUP       0x4B
@@ -79,52 +79,51 @@ This long list defines the 1.0.0 encoding values
 #define _kSTRUCT      0x55
 #define _KDEVICE      0x56
 
-#define _SET          0x5A
-#define _ADDSET       0x5B
-#define _SUBSET       0x5C
-#define _MULTSET      0x5D
-#define _DIVSET       0x5E
-#define _INC          0x5F
-#define _DEC          0X60
-#define _TERN         0x61
+#define _iSET          0x5A
+#define _iADDSET       0x5B
+#define _iSUBSET       0x5C
+#define _iMULTSET      0x5D
+#define _iDIVSET       0x5E
+#define _iINC          0x5F
+#define _iDEC          0X60
+#define _iTERN         0x61
 
-#define _RAND         0x6A
-#define _DISPLAY      0x6B
-#define _STARTLOG     0x6C
-#define _WRITELOG     0x6D
-#define _CLOSELOG     0x6E
-#define _USIN         0x6F
-#define _BIND         0x70
-#define _COPY         0x71
-#define _SPAWN        0x72
-#define _KILL         0x73
-#define _UNBIND       0x74
-#define _GAUSS        0x75
+#define _kRAND         0x6A
+#define _kDISPLAY      0x6B
+#define _kSTARTLOG     0x6C
+#define _kWRITELOG     0x6D
+#define _kCLOSELOG     0x6E
+#define _kUSIN         0x6F
+#define _kBIND         0x70
+#define _kCOPY         0x71
+#define _kSPAWN        0x72
+#define _kKILL         0x73
+#define _kUNBIND       0x74
+#define _kGAUSS        0x75
 
-#define _TONEURAL     0x7A
-#define _TOSERIAL     0x7B
-#define _USB          0x7C
-#define _FNCGEN       0x7D
+#define _iTONEURAL     0x7A
+#define _iTOSERIAL     0x7B
+#define _iUSB          0x7C
+#define _iFNCGEN       0x7D
 
 #define _kAND         0x80
 #define _kOR          0x81
 #define _kNOT         0x82
 #define _kNAND        0x83
-#define _kNAND        0x84
-#define _kNOR         0x85
-#define _kXOR         0x86
-#define _kXNOR        0x87
+#define _kNOR         0x84
+#define _kXOR         0x85
+#define _kXNOR        0x86
 
-#define _GRID         0x90
-#define _MATRIX       0x91
-#define _RING         0x92
-#define _LING         0x93
+#define _iGRID         0x90
+#define _iMATRIX       0x91
+#define _iRING         0x92
+#define _iLING         0x93
 
-#define _JUMP         0xA0
-#define _BREAK        0xA1
-#define _GOTO         0xA2
+#define _iJUMP         0xA0
+#define _iBREAK        0xA1
+#define _iGOTO         0xA2
 
-#define _MATH         0xB0
-#define _INSERT       0xB1
+#define _iMATH         0xB0
+#define _iINSERT       0xB1
 
 #endif
