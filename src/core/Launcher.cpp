@@ -12,6 +12,12 @@
 #include <string>
 #include <vector>
 
+bool suppressError;
+bool suppressWarning;
+bool fatalWarning;
+unsigned numWarnings;
+unsigned numErrors;
+
 using namespace std;
 
 void help()
@@ -29,7 +35,16 @@ void help()
   printf("-v           Print version info\n");
   printf("-s           Print symbolic signature\n");
   printf("-h           Print this dialogue\n");
-  printf("-i           Save encoded file to disk\n");
+  printf("-o           Enable optimizations\n");
+}
+
+void initialize()
+{
+  suppressError = false;
+  suppressWarning = false;
+  fatalWarning = false;
+  numWarnings = 0;
+  numErrors = 0;
 }
 
 void vInfo()
@@ -80,8 +95,10 @@ Config loadCMD(int argc, char**argv)
   Config config;
 
   //initialise config object
-  config.critWrn = false;
+  fatalWarning = false;
+
   config.debug = false;
+  config.prjDebug = false;
   config.buildRTE = false;
   config.buildCTM = false;
   config.staticObjects = false;
@@ -129,6 +146,7 @@ Config loadCMD(int argc, char**argv)
         case 'v': vInfo(); break;
         case 's': break;//TODO implement this
         case 'h': help(); break;
+        case 'o': config.optimize = true; break;
         default:
           printf("Unrecognized option\n");
           error = true;
@@ -170,6 +188,8 @@ Config loadCMD(int argc, char**argv)
 
 int main(int argc, char**argv)
 {
+  initialize();
+
   Config config = loadCMD(argc, argv);
 
   if (config.buildLevel == _nocompile)
@@ -179,7 +199,7 @@ int main(int argc, char**argv)
   }
   if (config.buildLevel >= _precompile)
   {
-    
+
   }
   if (config.buildLevel >= _tokenize)
   {

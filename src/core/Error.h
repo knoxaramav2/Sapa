@@ -22,6 +22,7 @@ extern unsigned numErrors;
 #define WRN_UNEXPECT_EXT    00001//Unexpected file extension
   //Format
   //General
+#define WRN_IMP_CAST        01001//implicit type cast
   //Syntax
   //Config
   //Type

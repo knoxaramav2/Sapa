@@ -21,8 +21,8 @@ const int _assemble = 6;
 struct Config
 {
   //command line settings
-  bool critWrn;//warnings are fatal
   bool debug;//print debugging information
+  bool prjDebug;//enable debugging in rte
   bool buildRTE;//build runtime enviornment
   bool buildCTM;//build connectome file
   bool staticObjects;//objects will not spawn/prune

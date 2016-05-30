@@ -11,11 +11,11 @@
 #define ANSI_COLOR_WHITE   "\x1b[37m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
-bool suppressError = false;
-bool suppressWarning = false;
-bool fatalWarning = false;
-unsigned numWarnings = false;
-unsigned numErrors = false;
+extern bool suppressError;
+extern bool suppressWarning;
+extern bool fatalWarning;
+extern unsigned numWarnings;
+extern unsigned numErrors;
 
 void print(unsigned ecode, string message, string comment, int index, string&code)
 {

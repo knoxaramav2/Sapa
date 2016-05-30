@@ -10,13 +10,12 @@ debug true
 title dev
 version 1.0.0
 language c
-makeRTE false
-makeCTM false
-prsvSymb false
+makeRTE false#build simulation environment
+makeCTM false#generate connectome file
 
 #sim settings
 RSP -70#resting potential
 TDF 1.0#time dilation factor
-NGEN true#neuro genesis
+STATIC false#system does not spawn/prune components
 NMAX 500#max allowed neurons. 0 for infinite
 NTRAN 2#multiple of 8 neurotransmitter slots. Must have at least 1. Max 8 for 64 bit system, 4 for 32
