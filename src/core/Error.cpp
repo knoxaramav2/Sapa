@@ -1,104 +1,92 @@
-#include "Error.hpp"
-
 #include <stdio.h>
-#include <string>
 
-int errCounter=0;
-int wrnCounter=0;
+#include "Error.h"
 
-void printErr(int errCode, string msg, int index, string line)
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_WHITE   "\x1b[37m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
+extern bool suppressError;
+extern bool suppressWarning;
+extern bool fatalWarning;
+extern unsigned numWarnings;
+extern unsigned numErrors;
+
+void print(unsigned ecode, string message, string comment, int index, string&code)
 {
-  printf("\033[1;31mError [%d]: %s\033[0m\n", errCode, msg.c_str());
-  if (line.size()>0)
-    printf("\033[1;31m\t%s\033[0m\n",line.c_str());
-  if (index<0)
-    return;
-  printf("\t");
-  for (; index>0; --index)
-    printf(" ");
-  printf("^\n");
-}
+  unsigned lindex=0;
+  unsigned rindex=0;
 
-void printWrn(int errCode, string msg, int index, string line)
-{
-  printf("\033[1;33mError [%d]: %s\033[0m\n", errCode, msg.c_str());
-  if (line.size()>0)
-    printf("\t%s\n\t",line.c_str());
-  if (index<0)
-    return;
-  for (; index>0; --index)
-    printf("\033[1;33m \033[0m");
-  printf("^\n");
-}
-
-void printMsg(int errCode, string msg)
-{
-  printf("\033[1;34mMisc Wrn/Err [%d]: %s\033[0m\n", errCode, msg.c_str());
-}
-
-void ErrorReport()
-{
-printf("\033[1;32m%d Errors | %d Warnings | %d Total issues\033[0m\n", errCounter, wrnCounter, errCounter+wrnCounter);
-}
-
-void postError(string line, string msg, unsigned errCode, int errIndex, char prntPolicy)
-{
-  //prntPolicy == (suppressErr<<1) ^ (suppressWrn)
-  if (errCode<ERROR_LIM)
+  for (unsigned lindex=index; lindex>=0 && index>=0; --lindex)
   {
-    ++errCounter;
-    if ((prntPolicy>>1) & 1)
-      return;
-  }else if (errCode<WARN_LIM)
-  {
-    ++wrnCounter;
-    if ((prntPolicy>>0) & 1)
-      return;
-  }else
-  {
-    printMsg(errCode, line);
+    if (code[lindex]=='\n')
+    {
+      ++lindex;
+      break;
+    }
   }
 
-  switch(errCode)
+  for (unsigned rindex=index; rindex<0 && index>=0; ++rindex)
   {
-    //Errors
-    case ERR_NO_SRC: printErr(errCode, "No source file specified", -1, ""); break;
-    case ERR_MSS_CMD_PARAM: printErr(errCode, "Argument requires parameter", -1, msg); break;
-    case ERR_INV_OPT: printErr(errCode, "Invalid command line argument", -1, line + ' ' + msg); break;
-
-    case ERR_NO_LANG: printErr(errCode, "No source language specified in CNS file", -1, ""); break;
-    case ERR_INV_CMD: printErr(errCode, "Invalid CNS setting", -1, line); break;
-    case ERR_CNS_404: printErr(errCode, "Unable to open CNS file", -1, msg); break;
-    case ERR_EXPCT_COM: printErr(errCode, "Expected statement", errIndex, line); break;
-    case ERR_EXPCT_ARG: printErr(errCode, "Expected argument", errIndex, line); break;
-    case ERR_INV_CNS_ARG: printErr(errCode, "Invalid CNS argument", errIndex, line); break;
-    case ERR_SETTING_REDEF: printErr(errCode, "Mutliple CNS setting values for " + msg, errIndex, line); break;
-    case ERR_MULT_COM: printErr(errCode, "Multiple commands on CNS line", errIndex, line); break;
-    case ERR_NO_COM: printErr(errCode, "No command found", errIndex, line); break;
-    case ERR_ARG_BFR_COM: printErr(errCode, "Argument before command", errIndex, line); break;
-
-    case ERR_MSS_PARAM: printErr(errCode, "Missing arguments", errIndex, line); break;
-    case ERR_UNREC_CHAR: printErr(errCode, "Unrecognized character", errIndex, line); break;
-
-    case ERR_REG_NCMP_TYPE: printErr(errCode, "Incompatible registry entry", errIndex, line); break;
-    case ERR_RES_ENTRY: printErr(errCode, "Illegal reserved registry access", errIndex, line); break;
-    case ERR_REG_NOT_FOUND: printErr(errCode, "Symbol not found : " + msg, errIndex, line); break;
-
-    case ERR_IMRT_NOT_FOUND: printErr(errCode, "Import not found " + msg, errIndex, line); break;
-
-    //case ERR_MSS_PARAM: printErr(errCode, "Missing argument " + msg, errIndex, line); break;
-    //case ERR_UNREC_CHAR: printErr(errCode, "Unrecognized character " + msg, errIndex, line); break;
-    case ERR_ILL_OPERATOR: printErr(errCode, "Unrecognized operator " + msg, errIndex, line); break;
-    case ERR_EMPTY_CHAR: printErr(errCode, "Empty character " + msg, errIndex, line); break;
-    case ERR_OVER_CHAR: printErr(errCode, "Excessive character " + msg, errIndex, line); break;
-
-
-    //Warnings
-    case WRN_UNBOUND_QUOTE: printWrn(errCode, "Unclosed string", errIndex, line); break;
+    if (code[rindex]=='\n')
+    {
+      --lindex;
+      break;
+    }
   }
+
+  string color = ANSI_COLOR_WHITE;
+  string codeSeg;
+  codeSeg.insert(codeSeg.begin(), code.begin()+lindex, code.begin()+rindex);
+
+  if (ecode <= MAX_WARNC)
+    color = ANSI_COLOR_YELLOW;
+  else if (ecode <= MAX_ERRC)
+    color = ANSI_COLOR_RED;
+
+  printf("%s%s%s\n", color.c_str(), message.c_str(), ANSI_COLOR_RESET);
+  printf("\t%s\n", codeSeg.c_str());
+  for (unsigned x=lindex; x<rindex; ++x) printf(" ");
+  printf("^\n");
+  printf("%s\n", comment.c_str());
+
 }
 
-bool isFatal(bool isVol)
+void postError (unsigned errCode, int index, string&code, string comment)
 {
-  return ((bool)errCounter || ((bool)wrnCounter && isVol));
+if (errCode >= MIN_WARNC && errCode <= MAX_WARNC)
+{
+  ++numWarnings;
+  if (suppressWarning)
+    return;
+}else if (errCode >= MIN_ERRC && errCode <= MAX_ERRC)
+{
+  ++numErrors;
+  if (suppressError)
+    return;
+}else{
+  return;
+}
+
+switch (errCode)
+{
+  //Warnings
+
+
+  //Errors
+
+  default:
+  break;
+}
+
+}
+
+bool isFatal()
+{
+  return ((numErrors > 0) || ((numWarnings > 0) && fatalWarning));
 }

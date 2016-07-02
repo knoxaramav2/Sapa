@@ -1,26 +1,21 @@
-#test CNS file
+#test CNS
 #SAPA project file
-#directory of
 
-# = SET
-# ^ IMPORT
-
-^ src
+import src
 
 #compilation settings
-= evolution false
-= optimize false
-= debug true
-= title dev
-= version 1.0.0
-= language c++
-= makeRTE false
-= makeCTM false
-= prsvSymb false
+experimental false
+optimize false
+debug true
+title dev
+version 1.0.0
+language c
+makeRTE false#build simulation environment
+makeCTM false#generate connectome file
 
 #sim settings
-= RSP -70#resting potential
-= TDF 1.0#time dilation factor
-= NGEN true#neuro genesis
-= NMAX 500#max allowed neurons. 0 for infinite
-= NTRAN 2#multiple of 8 neurotransmitter slots. Must have at least 1. Max 8 for 64 bit system, 4 for 32
+RSP -70#resting potential
+TDF 1.0#time dilation factor
+STATIC false#system does not spawn/prune components
+NMAX 500#max allowed neurons. 0 for infinite
+NTRAN 2#multiple of 8 neurotransmitter slots. Must have at least 1. Max 8 for 64 bit system, 4 for 32

@@ -1,42 +1,79 @@
-#*
-Defines transmitter
-*#
+?psuedo 0b00000001 eHi
+?psuedo 0b00000010 eMd
+?psuedo 0b00000100 eLo
+?psuedo 0b00001000 iHi
+?psuedo 0b00010000 iMd
+?psuedo 0b00100000 iLo
+?psuedo 0b01000000 pStr
+?psuedo 0b10000000 pWkn
 
-?psuedo signal:0 eHi
-?psuedo signal:1 eMd
-?psuedo signal:2 eLo
-?psuedo signal:3 iHi
-?psuedo signal:4 iMd
-?psuedo signal:5 iLo
-
-?import src2
-
-#*Basic interneural cell definition
-'cell' and 'group' structures are interfaces
-
-cells have the virtual methods:
-update()
-receiver()
-and members
-deci charge
-*#
-
-new cell
+cell intnrn
 [
-name="intr";#interneural cell
-#class=... Extended class
-#declare new elements
-
-new float[name="thresh";]
-new float[name="equil";]
-
-#initialize elements
-override init()
-  [
-    #cell constructor
-    charge=0;
-
-    thresh=-70;
-    equil=0.9;
-  ]
+	float charge;
+	float decay;
+	float influx;
+	const float equilibrium;
+	const float threshold;
+	state refactory;
+	signal output;
+	signal filter;
+	signal prop;#propagating transmitter
+	synapse targets;
+	
+	override void init()
+	{
+		charge=0;
+		decay=0;
+		influx=0;
+		equilibrium=.5;
+		threshold=-55;
+		refactory=false;
+		filter = eHi || eMd || eLo || iHi || iMd || iLo || pStr || pWkn;
+		output = eMd;
+	}
+	
+	override void update()
+	{
+		if (charge >= threshold)
+		{
+			fire();
+		}
+		else if (refactory)
+		{
+			
+		}else
+		{
+		
+		}
+	}
+	
+	override void fire()
+	{
+		loop(targets, tgt)
+		{
+			tgt.neuron.recieve(output, tgt.weight);
+		}
+		
+		charge=0;
+		refactory=true;
+		prop=0;
+	}
+	
+	override void recieve(signal sgnl, float weight)
+	{
+		sgnl = sgnl & filter;# & operator behaves as bitwise when applied to signal type
+		influx+=(sgnl:0)*weight*1;
+		influx+=(sgnl:1)*weight*0.5;
+		influx+=(sgnl:2)*weight*0.2;
+		influx-=(sgnl:3)*weight*1;
+		influx-=(sgnl:4)*weight*0.5;
+		influx-=(sgnl:5)*weight*0.2;
+		prop = prop || sgnl:6 || sgnl:7;
+		
+		loop(targets, tgt)
+		{
+			tgt.weight+=((sgnl:6 & weight) - (sgnl:7 & weight));
+		}
+	}
 ]
+

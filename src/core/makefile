@@ -1,13 +1,14 @@
 # Compiles neurOn compiler
 
 CC=g++
-CFLAGS= -Wall -std=c++14
+VERSION=\""1.0.0\""
+CFLAGS= -DVERSION=$(VERSION) -DDEV=true -Wall -std=c++14
 #LIBS= -lm -L/Libs -L. Libs/KNX_Library.a
-SRC=Launcher Error Project Registry Scanner LexUtil PreCompiler Lexical
+SRC=Launcher Error PreComp
 INCLUDES= -I.
 OUT=nrn
 CLEANEXT = o a
-BITVRS=64
+BITVRS=32
 DBGFLAGS= -s --src test.cns
 LIBS= -lm -LLibs/$(BITVRS)bit -lKNX_Library
 
@@ -31,9 +32,6 @@ endif
 #-LLibs -lKNX_Library
 $(OUT):$(SRC:=.cpp)
 	$(CC) $(SRC:=.cpp) $(OSMODE) $(PLATFORM) $(CFLAGS) $(LIBS) -o $(EXPORT_PTH)$(OUT)$(EXT)
-	#$(CC) -o $(EXPORT_PTH)$(OUT)$(EXT)  $^ $(OSMODE) $(PLATFORM) $(CFLAGS) $(LIBS)
-	#$(CC) $(SRC:=.cpp) -LLibs -lKNX_Library -o nrn
-	#g++ -o nrn Launcher.cpp -L/Libs -lKNX_Library.a
 
 dep:
 		makedepend -- $(CFLAGS) -- $(INCLUDES) $(SRC)
