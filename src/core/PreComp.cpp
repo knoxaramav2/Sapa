@@ -101,6 +101,8 @@ size_t importFile(string file, vector <string> &code)
     line.erase(line.end()-1);
     #endif
   }
+
+  return code.size();
 }
 
 //returns initial import list
