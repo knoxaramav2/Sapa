@@ -11,11 +11,11 @@
 #define ANSI_COLOR_WHITE   "\x1b[37m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
-extern bool suppressError;
-extern bool suppressWarning;
-extern bool fatalWarning;
-extern unsigned numWarnings;
-extern unsigned numErrors;
+bool suppressError = false;
+bool suppressWarning = false;
+bool fatalWarning = false;
+unsigned numWarnings = 0;
+unsigned numErrors = 0;
 
 void print(unsigned ecode, string message, string comment, int index, string&code)
 {
@@ -57,7 +57,7 @@ void print(unsigned ecode, string message, string comment, int index, string&cod
 
 }
 
-void postError (unsigned errCode, int index, string&code, string comment)
+void postError (unsigned errCode, int index, string comment)
 {
 if (errCode >= MIN_WARNC && errCode <= MAX_WARNC)
 {
@@ -72,6 +72,8 @@ if (errCode >= MIN_WARNC && errCode <= MAX_WARNC)
 }else{
   return;
 }
+
+printf("ERR/WRN %u\n", errCode);
 
 switch (errCode)
 {

@@ -1,53 +1,37 @@
-#ifndef CONFIGURE
-#define CONFIGURE
-/*
-Holds configuration data from commandline,
-as well as identified information
-
-Generated in loadCMD (Launcher.cpp)
-*/
+#ifndef CONFIG
+#define CONFIG
 
 #include <string>
+
 using namespace std;
 
-const int _nocompile = 0;
-const int _precompile = 1;
-const int _tokenize = 2;
-const int _lexical = 3;
-const int _encode = 4;
-const int _build = 5;
-const int _assemble = 6;
+struct Config{
 
-struct Config
-{
-  //command line settings
-  bool debug;//print debugging information
-  bool prjDebug;//enable debugging in rte
-  bool buildRTE;//build runtime enviornment
-  bool buildCTM;//build connectome file
-  bool staticObjects;//objects will not spawn/prune
-  bool createEncodeFile;//write encode file to disk
-  bool useMake;//utilize makefile
-  bool optimize;//additional scans to improve performance
+  //Compiler settings (CLI)
+  string cns;//CNS path file
 
-  string makeFile;//if blank and enabled, search locally
+  bool makefile;
+  bool ctm;
+  bool rte;
+  bool optimize;
+  bool debug;
 
-  //project file
+  //Project settings (CNS)
   string projectName;
-  string projectVersion;
-  string targetLanguage;
-  string srcFile;
+  string version;
+  string language;//target language
 
-  int maxObjects;//maximum cells/groups allowed (0=unlimited)
-  int signalLength;//bytes used in signal object
+  float tdf;//time dialation factor
+  float rsp;//global default resting potential
 
-  float TDF;//time dilation factor
-  float GRP;//global resting potential
+  float nmax;
+  float ntran;
 
-  bool experimental;//experimental features
+  bool experimental;
+  bool cdbg;
+  bool cstatic;
 
-  //internal
-  int buildLevel;
+  string sourcePath;
 
 };
 

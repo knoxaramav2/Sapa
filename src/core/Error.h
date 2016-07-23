@@ -22,7 +22,7 @@ extern unsigned numErrors;
 #define WRN_UNEXPECT_EXT    00001//Unexpected file extension
   //Format
   //General
-#define WRN_IMP_CAST        01001//implicit type cast
+#define WRN_IMP_CAST        02001//implicit type cast
   //Syntax
   //Config
   //Type
@@ -46,7 +46,7 @@ extern unsigned numErrors;
 #define ERR_INV_TYPE        15001//Invalid type
 
 //Error code, index, code file, comment
-void postError(unsigned, int, string&, string);
+void postError(unsigned, int, string);
 
 bool isFatal();
 

@@ -1,10 +1,12 @@
 
 
 #include "Libs/KNX_Libraries/KNX_String.h"
+#include "Libs/KNX_Libraries/KNX_File.h"
 
-#include "Config.h"
-#include "Bytecode.h"
+#include "Database.h"
 #include "Error.h"
+#include "Config.h"
+#include "Compilation.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -12,11 +14,7 @@
 #include <string>
 #include <vector>
 
-bool suppressError;
-bool suppressWarning;
-bool fatalWarning;
-unsigned numWarnings;
-unsigned numErrors;
+int buildLevel = 0;
 
 using namespace std;
 
@@ -25,7 +23,6 @@ void help()
 
   printf("\n\n");
   printf("-d           Enable debug mode\n");
-  printf("-b           Enable build\n");
   printf("-m           Use makefile\n");
   printf("-c           Generate connectome file\n");
   printf("-r           Generate simulation enviornment\n");
@@ -36,15 +33,9 @@ void help()
   printf("-s           Print symbolic signature\n");
   printf("-h           Print this dialogue\n");
   printf("-o           Enable optimizations\n");
-}
 
-void initialize()
-{
-  suppressError = false;
-  suppressWarning = false;
-  fatalWarning = false;
-  numWarnings = 0;
-  numErrors = 0;
+  printf("--src        Set CNS file path\n");
+  printf("--lang       Set language to compile to\n");
 }
 
 void vInfo()
@@ -57,170 +48,120 @@ void vInfo()
   #else
   OS="Unrecognized OS";
   #endif
-  printf("Version: %s %d-bit <%s> Encoder: %d\n", VERSION, BITMODE, OS.c_str(), BYTECODE_VERSION);
+  printf("Version: %s %d-bit <%s> Encoder: %d\n", VERSION, BITMODE, OS.c_str(), 1);
 }
 
 //set build level to highest of the two inputs
-inline int setBuildLevel(int buildLevel, int newLevel)
+inline void setBuildLevel(int newLevel)
 {
-  return newLevel > buildLevel? newLevel : buildLevel;
+  buildLevel = newLevel > buildLevel? newLevel : buildLevel;
 }
 
-//return number of arguments after given index
-int getNumParams(int argc, char**argv, int x)
+bool validateExpected(int x, int argc, char**argv)
 {
-  if (x+1==argc)
-    return 0;
-
-  int y=x+1;
-  for (; y<argc; ++y)
-    if (argv[y][0]=='-')
-      {
-        --y;
-        break;
-      }
-
-  return y-x;
+  if (x+1 < argc && argv[x+1][0]!='-'){
+    return true;
+  }else{
+    printf("Argument for %s expected\n", argv[x]);
+    ++numErrors;
+    return false;
+  }
 }
 
-void cmdErr(string argv, string message, bool&fatal)
-{
-  fatal=true;
-  printf("%s\n\t>> %s\n", message.c_str(), argv.c_str());
-}
-
-//load command line options
-Config loadCMD(int argc, char**argv)
+Config parseCmd(int argc, char ** argv)
 {
   Config config;
 
-  //initialise config object
-  fatalWarning = false;
+  config.tdf=1.0f;
+  config.debug=false;
+  config.cdbg=false;
+  config.makefile=false;
+  config.ctm=false;
+  config.rte=false;
+  config.optimize=false;
+  config.experimental=false;
+  config.tdf=1.0f;
+  config.rsp=-70.0f;
+  config.nmax=500;
+  config.ntran=2;
+  config.cdbg=false;
+  config.cstatic=false;
 
-  config.debug = false;
-  config.prjDebug = false;
-  config.buildRTE = false;
-  config.buildCTM = false;
-  config.staticObjects = false;
-  config.createEncodeFile = false;
-  config.useMake = false;
-  config.optimize = false;
-
-  config.maxObjects = 0;
-  config.signalLength = 1;
-
-  config.TDF = 1.0f;
-  config.GRP = -70.0f;
-
-  config.experimental = false;
-  config.useMake = false;
-
-  config.buildLevel = 0;
-
-  //begin parsing command line arguments
-  bool canContinue=false;
-  bool error=false;
-
-  for (int x=1; x<argc; ++x)
+  for (int x = 1; x < argc; ++x)
   {
-    if (argv[x][0]!='-' || strlen(argv[x])==1)
+    if (argv[x][0]!='-')
     {
-      printf("Expected option : (%s)\n", argv[x]);
-      error = false;
-      break;
+      printf("Option %s must start with \'-\'\n", argv[x]);
+      ++numErrors;
+      continue;
     }
-    //single option switch (-x)
-    if (strlen(argv[x])==2)
+
+    size_t len = strlen(argv[x]);
+
+    printf(">>%s\n", argv[x]);
+
+    if (len == 2)
     {
       switch(argv[x][1])
       {
         case 'd': config.debug=true; break;
-        case 'b': setBuildLevel(config.buildLevel, 4); break;
-        case 'm': config.useMake = true; setBuildLevel(config.buildLevel, 4); break;
-        case 'c': config.buildCTM = true; setBuildLevel(config.buildLevel, 4); break;
-        case 'r': config.buildRTE = true; setBuildLevel(config.buildLevel, 4); break;
-        case 'i': config.createEncodeFile=true; break;
-        case 'w': suppressWarning = true; break;
-        case 'e': suppressError = true; break;
-        case 'f': fatalWarning = true; break;
+        case 'm': config.makefile=true; break;
+        case 'c': config.ctm=true; break;
+        case 'r': config.rte=true; break;
+        case 'w': suppressWarning=true; break;
+        case 'e': suppressError=true; break;
+        case 'f': fatalWarning=true; break;
         case 'v': vInfo(); break;
-        case 's': break;//TODO implement this
+        case 's': printf("---\n"); break;
         case 'h': help(); break;
-        case 'o': config.optimize = true; break;
+        case 'o': config.optimize=true; break;
         default:
-          printf("Unrecognized option\n");
-          error = true;
-        break;
+        printf("Unrecognized option \'%c\'\n", argv[x][1]);
+        continue;
       }
-    }else
+    }else if (len > 2)
     {
-      if (argv[x][1]!='-')
-        cmdErr(argv[x], "Complex option must be prefixed with \'--\'", error);
-      //complex options (--option arg...)
-      else if (strcmp(argv[x], "--make")==0)
+      if (strncmp(argv[x], "--src", 5) == 0 && validateExpected(x, argc, argv))
       {
-          config.makeFile = argv[x];
-      }
-      else if (strcmp(argv[x], "--src") == 0)
-      {
-          int numParams = getNumParams(argc, argv, x);
-          if (numParams != 1)
-              cmdErr(argv[x], "Must have an argument", error);
-          else
-          {
-            config.srcFile = argv[(x+=numParams)];
-            canContinue = true;
-          }
+          ++x;
+          config.cns= string(getFileName(argv[x]))+".nrn";
+          config.sourcePath = getPath(argv[x]);
 
+          printf("%s at %s", config.cns.c_str(), config.sourcePath.c_str());
+
+          setBuildLevel(_ASSEMBLE);
       }
-      else
+      else if (strncmp(argv[x], "--lang", 6) == 0 && validateExpected(x, argc, argv))
       {
-          cmdErr(argv[x], "Option not recognized", error);
+          config.language=argv[++x];
+      }else{
+        printf("Unrecognized option: %s\n", argv[x]);
+        ++numErrors;
+        continue;
       }
+    }else{
+      printf("Option tag missing identifier\n");
+      ++numErrors;
+      continue;
     }
   }
 
-  if (error || !canContinue)
-    config.buildLevel = 0;
 
   return config;
 }
 
 int main(int argc, char**argv)
 {
-  initialize();
 
-  Config config = loadCMD(argc, argv);
+  Config config = parseCmd(argc, argv);
 
-  if (config.buildLevel == _nocompile)
-  {
-    printf("Compilation ended\n");
-    return 0;
-  }
-  if (config.buildLevel >= _precompile)
-  {
+  Codestruct codestruct;
+  vector <Page> pages;
 
-  }
-  if (config.buildLevel >= _tokenize)
-  {
-
-  }
-  if (config.buildLevel >= _lexical)
-  {
-
-  }
-  if (config.buildLevel >= _encode)
-  {
-
-  }
-  if (config.buildLevel >= _build)
-  {
-
-  }
-  if (config.buildLevel == _assemble)
-  {
-
-  }
+  if (buildLevel >= _CNS)
+    {codestruct = LoadCNS(config);}
+  if (buildLevel >= _PRECOMP)
+    {pages = Precompile(config, codestruct);}
 
   if (isFatal() == false)
     printf("Compilation complete\n");

@@ -1,6 +1,8 @@
 #Compiles entire SAPA project
 
 SUBDIRS = src/core/
+BITVRS=64
+export BITVRS
 
 subdirs:
 	for dir in $(SUBDIRS); do \
@@ -9,11 +11,11 @@ subdirs:
 
 .PHONY: run
 run:
-		./nrn --src test -p -l -b
+		./nrn.exe --src Projects/test/test.cns
 
 .PHONY: dbg
 dbg:
-		./nrn -d --src test -p -l -b
+		./nrn.exe -d --src Projects/test/test.cns -d
 
 .PHONY: clean
 clean:

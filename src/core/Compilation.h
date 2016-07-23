@@ -1,37 +1,29 @@
 #ifndef COMPILATION
 #define COMPILATION
 
-#include "Bytecode.h"
 #include "Config.h"
+#include "Model.h"
+#include "Error.h"
 
 #include <string>
 #include <vector>
 
 using namespace std;
 
-struct token
-{
-  unsigned char meta;
-  void * data;
+enum LoadState{
+  _NOCOMPILE, _CNS, _PRECOMP, _TOKENIZE, _MODEL, _ASSEMBLE
 };
 
-//holds pre-compiled version of source files
-//useful for debugging printouts
-//holds additional meta information
-struct dataFile
+struct Codestruct
 {
-  vector <string> libraries;//imported libraries
-  vector <string> code;//condensed code
+  vector <string> sources;
+
+  string sourceMap;
+  string raw;
 };
 
-dataFile preCompile(Config &);
+Codestruct LoadCNS(Config&);
+vector <Page> Precompile(Config&, Codestruct&);
 
-vector <token> tokenize(Config &, dataFile &);
-
-void lexical (Config &, dataFile &, vector <token> &);
-
-void encode (Config &);
-
-void assemble (Config &);
 
 #endif
