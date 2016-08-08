@@ -4,7 +4,7 @@ CC=g++
 VERSION=\""1.0.0\""
 CFLAGS= -DVERSION=$(VERSION) -DDEV=true -Wall -std=c++14
 #LIBS= -lm -L/Libs -L. Libs/KNX_Library.a
-SRC=Launcher Error CNS Precompile
+SRC=Launcher Error CNS Precompile Util Tokenizer
 INCLUDES= -I.
 OUT=nrn
 CLEANEXT = o a

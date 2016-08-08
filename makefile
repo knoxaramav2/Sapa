@@ -15,7 +15,7 @@ run:
 
 .PHONY: dbg
 dbg:
-		./nrn.exe -d --src Projects/test/test.cns -d
+		./nrn.exe -d --src Projects/test/test.cns
 
 .PHONY: clean
 clean:

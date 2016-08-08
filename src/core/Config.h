@@ -32,7 +32,6 @@ struct Config{
   bool cstatic;
 
   string sourcePath;
-
 };
 
 #endif

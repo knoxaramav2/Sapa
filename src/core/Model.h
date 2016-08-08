@@ -35,9 +35,14 @@ struct Word
   string raw;
 };
 
+struct KeyPair{
+  string key;
+  vector <string> values;
+};
+
 //represents file-by-file pre-compilation data
 struct Page{
-  vector <string> alia;
+  vector <KeyPair> alia;
 
   string raw;
 };

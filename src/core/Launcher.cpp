@@ -7,12 +7,15 @@
 #include "Error.h"
 #include "Config.h"
 #include "Compilation.h"
+#include "Util.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <chrono>
 #include <string>
 #include <vector>
+
+#define DEVMODE false
 
 int buildLevel = 0;
 
@@ -98,8 +101,6 @@ Config parseCmd(int argc, char ** argv)
 
     size_t len = strlen(argv[x]);
 
-    printf(">>%s\n", argv[x]);
-
     if (len == 2)
     {
       switch(argv[x][1])
@@ -124,10 +125,10 @@ Config parseCmd(int argc, char ** argv)
       if (strncmp(argv[x], "--src", 5) == 0 && validateExpected(x, argc, argv))
       {
           ++x;
-          config.cns= string(getFileName(argv[x]))+".nrn";
-          config.sourcePath = getPath(argv[x]);
+          string extension = getExtension(argv[x]);
 
-          printf("%s at %s", config.cns.c_str(), config.sourcePath.c_str());
+          config.cns= string(getFileName(argv[x])) + (extension.empty() ? "" : "."+extension);
+          config.sourcePath = getPath(argv[x]);
 
           setBuildLevel(_ASSEMBLE);
       }
@@ -146,13 +147,13 @@ Config parseCmd(int argc, char ** argv)
     }
   }
 
-
   return config;
 }
 
+#if DEVMODE == false
+
 int main(int argc, char**argv)
 {
-
   Config config = parseCmd(argc, argv);
 
   Codestruct codestruct;
@@ -162,13 +163,45 @@ int main(int argc, char**argv)
     {codestruct = LoadCNS(config);}
   if (buildLevel >= _PRECOMP)
     {pages = Precompile(config, codestruct);}
+  if (buildLevel >= _TOKENIZE)
+    {Tokenize(config, codestruct, pages);}
 
   if (isFatal() == false)
-    printf("Compilation complete\n");
+    printf("\nCompilation complete\n");
   else
-    printf("Compilation failed\n");
+    printf("\nCompilation failed\n");
 
   printf("%u Warnings | %u Errors\n", numWarnings, numErrors);
 
 return 0;
 }
+
+#else
+
+int main(int argc, char**argv)
+{
+  enum {_s1=0, _s2, _s3};
+  int state = _s1;
+
+  printf("%d\n", bitAction(state, _s1, _bmSet));
+  printf("%d\n", bitAction(state, _s1, _bmCheck));
+  printf("%d\n", state);
+
+  printf("%d\n", bitAction(state, _s3, _bmSet));
+  printf("%d\n", bitAction(state, _s3, _bmCheck));
+  printf("%d\n", state);
+
+  printf("%d\n", bitAction(state, _s2, _bmCheck));
+  printf("%d\n", bitAction(state, _s2, _bmSet));
+  printf("%d\n", bitAction(state, _s2, _bmCheck));
+  printf("%d\n", state);
+
+  printf("%d\n", bitAction(state, _s1, _bmClear));
+  printf("%d\n", bitAction(state, _s1, _bmCheck));
+  printf("%d\n", state);
+
+
+  return 0;
+}
+
+#endif

@@ -70,7 +70,7 @@ Codestruct LoadCNS(Config&config)
 {
   if (config.debug) printf("Loading %s\n", config.cns.c_str());
 
-  ifstream ifile(config.cns);
+  ifstream ifile((config.sourcePath.empty() ? "" : config.sourcePath + "/") + config.cns);
 
   if (!ifile)
   {
@@ -102,8 +102,6 @@ Codestruct LoadCNS(Config&config)
       {
         if ((state==0 || c==0) && state!=2)//normal (always accept end of line)
         {
-          //printf(">> %s\n", buffer.c_str());
-
           if (buffer.empty()) continue;
 
           if (model.field.empty()) model.field = buffer;
@@ -145,7 +143,6 @@ Codestruct LoadCNS(Config&config)
   }
 
   //validate and assign CNS configurations
-
   Codestruct codestruct;
 
   for (vmodel model: models)

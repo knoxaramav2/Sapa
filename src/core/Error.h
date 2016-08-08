@@ -25,6 +25,8 @@ extern unsigned numErrors;
 #define WRN_IMP_CAST        02001//implicit type cast
   //Syntax
   //Config
+#define WRN_BLANK_PRECMP    04001//unused precompiler directive
+#define WRN_REDEF_PRECMP    04002//precompiler directive overridden
   //Type
 //Error Codes 10,001 - 20,000
   //File
@@ -33,19 +35,22 @@ extern unsigned numErrors;
 #define ERR_FNF             10004//File not found
 #define ERR_FWRITE          10005//Could not write to file
 #define ERR_FREAD           10006//Could not read file
+#define ERR_FOPEN           10007//Could not open file
   //General
 #define ERR_UNRES_SYMBOL    12001//Unresolved symbol
 #define ERR_UNREC_CHAR      12002//Unrecognized symbol
 #define ERR_REDEF_SYMB      12003//Redfined symbol in scope
   //Syntax
 #define ERR_ILL_OP_ARG      13001//Illegal operator arguments
+#define ERR_ILL_OP          13002//Illegal operand
   //Config
 #define ERR_SETTING         14001//Invalid setting
 #define ERR_SETTING_VALUE   14002//Invalid setting value
+#define ERR_SETTING_TYPE    14003//Invalid input type
   //Type
 #define ERR_INV_TYPE        15001//Invalid type
 
-//Error code, index, code file, comment
+//Error code, index, comment
 void postError(unsigned, int, string);
 
 bool isFatal();

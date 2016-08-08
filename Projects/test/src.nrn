@@ -19,7 +19,7 @@ cell intnrn
 	signal filter;
 	signal prop;#propagating transmitter
 	synapse targets;
-	
+
 	override void init()
 	{
 		charge=0;
@@ -31,7 +31,7 @@ cell intnrn
 		filter = eHi || eMd || eLo || iHi || iMd || iLo || pStr || pWkn;
 		output = eMd;
 	}
-	
+
 	override void update()
 	{
 		if (charge >= threshold)
@@ -40,40 +40,40 @@ cell intnrn
 		}
 		else if (refactory)
 		{
-			
+
 		}else
 		{
-		
+
 		}
 	}
-	
+
 	override void fire()
 	{
 		loop(targets, tgt)
 		{
 			tgt.neuron.recieve(output, tgt.weight);
 		}
-		
+
 		charge=0;
 		refactory=true;
 		prop=0;
 	}
-	
+
 	override void recieve(signal sgnl, float weight)
 	{
-		sgnl = sgnl & filter;# & operator behaves as bitwise when applied to signal type
-		influx+=(sgnl:0)*weight*1;
+		#sgnl = sgnl & filter; & operator behaves as bitwise when applied to signal type
+		sgnl &= filter;# & operator behaves as bitwise when applied to signal type
+		influx+=(sgnl:0)*weight*1;#test
 		influx+=(sgnl:1)*weight*0.5;
 		influx+=(sgnl:2)*weight*0.2;
 		influx-=(sgnl:3)*weight*1;
 		influx-=(sgnl:4)*weight*0.5;
 		influx-=(sgnl:5)*weight*0.2;
 		prop = prop || sgnl:6 || sgnl:7;
-		
+
 		loop(targets, tgt)
 		{
 			tgt.weight+=((sgnl:6 & weight) - (sgnl:7 & weight));
 		}
 	}
 ]
-

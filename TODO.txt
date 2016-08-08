@@ -1,0 +1,3 @@
+Precompile.cpp
+  Accept bound strings in precompiler directives
+  perform precompiler directive and argument validation
