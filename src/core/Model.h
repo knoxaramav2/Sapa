@@ -7,44 +7,48 @@
 using namespace std;
 
 enum LCode{
-
+  //meta
+  lnan=0,
   //logical operators
-  land, lor, lnot, lnand, lnor, lxor, lxnor,
-  llss, lgtr, lequ, llssequ, lgtrequ, lnotequ,
-  loutex, loutinc, linex, lininc,
+  land=10, lor, lnot, lnand, lnor, lxor, lxnor,
+  llss=20, lgtr, lequ, llssequ, lgtrequ, lnotequ,
+  loutex=30, loutinc, linex, lininc,
   //arithmetic operators
-  ladd, lsub, ldivide, lmult, lmod, lpow, lroot,
+  ladd=40, lsub, ldivide, lmult, lmod, lpow, lroot,
   //functional operators
-  lref, lindx,
+  lref=50, lindx, lstop, llist,
   //setters
-  lset, laddset, lsubset, lmultset, ldivset,
+  lset=60, laddset, lsubset, lmultset, ldivset, linc, ldec,
+  landset, lorset, lnotset,
   //primitives / type keywords
-  lint, lfloat, lbool, lstring, lcell, lgroup, lfnc,
+  lint=80, lfloat, lbool, lstring, lchar, lcell, lgroup, lfnc, larray, lsignal,
+  //macros
+  ltrue=90, lfalse,
   //commands
-  lif, lelse, lwhile, lbreak, lgoto, lend, lnew, ldel,
+  lif=100, lelse, lwhile, lbreak, lgoto, lend, lnew, ldel, lfor,
   //attributes
-  loverride, lfinal, labstract,
+  loverride=120, lfinal, labstract,
   //encaps
-  lsfnc, lefnc, lsprm, leprm
-};
-
-//basic identified string
-struct Word
-{
-  LCode code;
-  string raw;
-};
-
-struct KeyPair{
-  string key;
-  vector <string> values;
+  lsfnc=130, lefnc, lsprm, leprm, lsbrk, lebrk,
+  //system
+  lpstart=140, lpend, lsym
 };
 
 //represents file-by-file pre-compilation data
 struct Page{
-  vector <KeyPair> alia;
-
   string raw;
+};
+
+struct Token{
+  string raw;
+  LCode type;
+  Token * previous;
+  Token * next;
+};
+
+struct Object{
+  string raw;
+  Object * parent;
 };
 
 #endif

@@ -2,6 +2,7 @@
 
 SUBDIRS = src/core/
 BITVRS=64
+GDB=
 export BITVRS
 
 subdirs:

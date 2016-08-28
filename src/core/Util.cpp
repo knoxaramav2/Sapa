@@ -2,8 +2,7 @@
 
 #include <stdio.h>
 
-int bitAction(int&val, int pos, bm_operation op)
-{
+int bitAction(int&val, int pos, bm_operation op){
   switch(op){
     case _bmSet:
       val |= 1 << pos;
@@ -26,4 +25,12 @@ int bitAction(int&val, int pos, bm_operation op)
   }
 
   return val;
+}
+
+void printc(string line, const char * color){
+  printf("%s%s" COLOR_RESET, color, line.c_str());
+}
+
+void printc(char c, const char * color){
+  printf("%s%c" COLOR_RESET, color, c);
 }

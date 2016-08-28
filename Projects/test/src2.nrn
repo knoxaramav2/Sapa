@@ -1,1 +1,57 @@
-#Test source 2
+#extend cell
+cell logical{
+
+  array [axon] axons;
+  
+  dec influx;
+  dec decay;
+  dec charge;
+  int volatility;
+
+  state refactory;
+
+  signal filter;
+  signal buffer;
+  signal output;
+
+  start(){
+    influx=0;
+    decay=0;
+    charge=0;
+    volatility=1;
+
+    refactory=false;
+
+    filter=eHi|eMd|eLo|iHi|iMd|iLo;
+    buffer=0;
+    output=eMd;
+  }
+
+  end(){
+    delete(axons);
+  }
+
+  #required
+  update(){
+
+  }
+
+  #required
+  receive(signal sgnl){
+    #switching a signal will iterate through and
+    #work out each available transmitter
+    switch(sgnl){
+      case eHi:
+
+        break;
+      }
+    }
+
+  #required
+  fire(){
+    for(axons:ax){
+      ax.target.receive(ax.sgnl);
+    }
+
+  }
+}

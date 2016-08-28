@@ -9,8 +9,27 @@
 
 using namespace std;
 
+char getEscapeCharacter(char c){
+
+  switch(c){
+    case '0': return 0;
+    case 'n': return '\n';
+    case 't': return '\t';
+    case 'r': return '\r';
+    case '\\': return '\\';
+    case '\'': return '\'';
+    case '\"': return '\"';
+    case 'v': return '\v';
+    case 'f': return '\f';
+    case 'a': return '\a';
+    case 'b': return '\b';
+  }
+
+  return c;
+}
+
 //update with aliases and other line modifiers
-string updateLine(string line, Page&page)
+string updateLine(string line, Page&page, Codestruct&cs)
 {
   size_t idx=0;
   for (size_t x=0; x<=line.size(); ++x)
@@ -25,7 +44,7 @@ string updateLine(string line, Page&page)
 
       string tmp = string(line.begin()+idx, line.begin()+x);
 
-      for (KeyPair kp : page.alia){
+      for (KeyPair kp : cs.alia){
         for (string val : kp.values){
           if (val == tmp)
           {
@@ -47,7 +66,7 @@ string updateLine(string line, Page&page)
 return line;
 }
 
-void parsePreCompilerDirective(string str, Config&config, Codestruct&codestruct, Page&page)
+void parsePreCompilerDirective(string str, Config&config, Codestruct&cs, Page&page)
 {
   string value;
   string::iterator index = str.begin();
@@ -89,7 +108,7 @@ void parsePreCompilerDirective(string str, Config&config, Codestruct&codestruct,
     for (string a : arguments)
     {
       bool append = true;
-      for (string s : codestruct.sources)
+      for (string s : cs.sources)
       {
         if (a == s)
           {
@@ -98,7 +117,7 @@ void parsePreCompilerDirective(string str, Config&config, Codestruct&codestruct,
           }
       }
       if (append){
-        codestruct.sources.push_back(a);
+        cs.sources.push_back(a);
         printf("%s ", a.c_str());
       }
     }
@@ -118,24 +137,24 @@ void parsePreCompilerDirective(string str, Config&config, Codestruct&codestruct,
     //check for alias updates or conflicts
     bool addNew = true;
 
-    for (size_t x=0; x<page.alia.size(); ++x)
+    for (size_t x=0; x<cs.alia.size(); ++x)
     {
-      if (page.alia[x].key == key){
+      if (cs.alia[x].key == key){
         addNew = false;
 
         for (size_t y=0; y<arguments.size(); ++y){
           //check for existing values
           bool append = true;
-          for (size_t z=0; z<page.alia[x].values.size(); ++z)
+          for (size_t z=0; z<cs.alia[x].values.size(); ++z)
           {
-            if (arguments[y] == page.alia[x].values[z])
+            if (arguments[y] == cs.alia[x].values[z])
             {
               append=false;
               break;
             }
           }
           if (append)
-            page.alia[x].values.push_back(arguments[y]);
+            cs.alia[x].values.push_back(arguments[y]);
           if (config.debug) printf("[%s] ", arguments[y].c_str());
         }
         break;
@@ -148,7 +167,7 @@ void parsePreCompilerDirective(string str, Config&config, Codestruct&codestruct,
       keypair.key = key;
       keypair.values = arguments;
 
-      page.alia.push_back(keypair);
+      cs.alia.push_back(keypair);
 
       if (config.debug)
       {
@@ -163,7 +182,7 @@ void parsePreCompilerDirective(string str, Config&config, Codestruct&codestruct,
   if (config.debug) printf("\n");
 }
 
-vector <Page> Precompile(Config&config, Codestruct&codestruct)
+vector <Page> Precompile(Config&config, Codestruct&cs)
 {
   vector <Page> pages;
 
@@ -173,23 +192,23 @@ vector <Page> Precompile(Config&config, Codestruct&codestruct)
 
   //format source files
   //interpret pre-preprocessor directives
-  for (size_t x=0; x<codestruct.sources.size(); ++x)
+  for (size_t x=0; x<cs.sources.size(); ++x)
   {
     Page page;
     //normal, precompiler directive
     enum {_pcNRM=0, _pcPCDIR, _pcSCMNT, _pcMCMNT};
     int state = _pcNRM;
 
-    ifstream ifile((codestruct.sources[x].empty() ? "" : config.sourcePath + "/") + codestruct.sources[x]);
+    ifstream ifile((cs.sources[x].empty() ? "" : config.sourcePath + "/") + cs.sources[x]);
 
     if (!ifile)
     {
-      postError(ERR_FNF, -1, codestruct.sources[x]);
+      postError(ERR_FNF, -1, cs.sources[x]);
       continue;
     }
 
     if (config.debug)
-      printf("Loading %s\n", codestruct.sources[x].c_str());
+      printf("Loading %s\n", cs.sources[x].c_str());
 
     while(!ifile.eof())
     {
@@ -197,10 +216,21 @@ vector <Page> Precompile(Config&config, Codestruct&codestruct)
       string buffer;
       getline (ifile, line);
 
-      for (size_t y=0; y<=line.size(); ++y)
+      if (line.size() == 0)
+        continue;
+
+      //check if last character in line requires
+      //appended whitespace
+      if (page.raw.size()>0 ){
+      char lchar = page.raw[page.raw.size()-1];
+      char rchar = line[0];
+      if (_isLetter(lchar) && _isLetter(rchar))
+        buffer+=' ';
+      }
+
+      for (size_t y=0; y<line.size(); ++y)
       {
         char c = line[y];
-
         //special states
         if (bitAction(state, _pcSCMNT, _bmCheck) || bitAction(state, _pcMCMNT, _bmCheck))
         {
@@ -212,33 +242,62 @@ vector <Page> Precompile(Config&config, Codestruct&codestruct)
               bitAction(state, _pcSCMNT, _bmCheck);
           }
         }else{
+          if (bitAction(state, _pcSCMNT, _bmCheck) || (bitAction(state, _pcMCMNT, _bmCheck))){
+            if (c=='#'){
+              if (y > line.size() && line[y+1]=='*'){
+                bitAction(state, _pcMCMNT, _bmClear);
+              }else{
+                bitAction(state, _pcSCMNT, _bmClear);
+              }
+              continue;
+            }
+          }
+
           switch (c)
           {
+            //single LR context operators
+            case '.':
+            buffer+=c;
+            if (_isWhitespace(line[y+1]))
+              ++y;
+            break;
+            case '\\':
+            buffer+=getEscapeCharacter(c);
+            break;
+            //whitespace redundancy check
             case ' ':
             case '\t':
             case '\n':
-            case '\r':
-            case 0:
-            if (buffer.empty() || bitAction(state, _pcSCMNT, _bmCheck) || bitAction(state, _pcMCMNT, _bmCheck))
-              continue;
+            case '\r':{
+              /*
+                Ignore whitespace where:
+                  * preceeding or next value is operator or whitespace
+                  * last value to page.raw is whitespace, if y == 0
+              */
+              c=' ';
+              char next = line[y+1];
 
-            if (!_isOperator(line[y+1]) && !_isOperator(line[y-1]))
-              buffer += ' ';
+              if (y>0 && _isWhitespace(line[y-1]))
+                continue;
 
-            //skip redundant white space
-            else if (line [y+1] == ' '  ||
-                line [y+1] == '\t' ||
-                line [y+1] == '\r' ||
-                line [y+1] == '\n' ||
-                line [y] == 0      ||//short circuit terminator
-                line [y+1] == 0)
-                ++y;
-            break;
-            case '?':
-              if (buffer.empty())
-              {
-                bitAction(state, _pcPCDIR, _bmSet);
+              if (_isOperator(next) || ((line.size()>0) && (_isOperator(line[y-1]))))
+                continue;
+
+              if (y==0 && page.raw.size() > 0){
+                if (_isOperator(page.raw[page.raw.size()-1])){
+                  continue;
+                }
               }
+
+              buffer += ' ';
+            }
+            break;
+            //state operators
+            case '?':
+            if (buffer.empty())
+            {
+              bitAction(state, _pcPCDIR, _bmSet);
+            }else buffer += c;
             break;
             case '#':
             if (line [y+1] == '*'){
@@ -248,7 +307,6 @@ vector <Page> Precompile(Config&config, Codestruct&codestruct)
               ++y;
             }
             break;
-
             default:
             if (bitAction(state, _pcSCMNT, _bmCheck) || bitAction(state, _pcMCMNT, _bmCheck))
               continue;
@@ -258,25 +316,24 @@ vector <Page> Precompile(Config&config, Codestruct&codestruct)
           }
         }
       }
+
       if (bitAction(state, _pcSCMNT, _bmCheck))
         bitAction(state, _pcSCMNT, _bmClear);
 
       //reset single line states
       if (bitAction(state, _pcPCDIR, _bmCheck)){
-        parsePreCompilerDirective(buffer, config, codestruct, page);
+        parsePreCompilerDirective(buffer, config, cs, page);
         bitAction(state, _pcPCDIR, _bmClear);
-      }else if (!buffer.empty())
-      {
-        buffer = updateLine(buffer, page);
+      }else if (!buffer.empty()){
+        buffer = updateLine(buffer, page, cs);
         if (config.debug) printf("%s", buffer.c_str());
         if (state == _pcSCMNT)
           state = _pcNRM;
-        page.raw +=  ' ' + buffer;
+        page.raw += buffer;
       }
-
       buffer.clear();
     }
-
+    if (config.debug) printf("\n");
     pages.push_back(page);
   }
 

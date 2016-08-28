@@ -10,6 +10,7 @@ OUT=nrn
 CLEANEXT = o a
 BITVRS=64
 DBGFLAGS= -s --src test.cns --path Projects/test/
+GDB=
 LIBS= -lm -LLibs/$(BITVRS)bit -lKNX_Library
 
 #configure for Linux and Windows
@@ -31,7 +32,7 @@ else
 endif
 #-LLibs -lKNX_Library
 $(OUT):$(SRC:=.cpp)
-	$(CC) $(SRC:=.cpp) $(OSMODE) $(PLATFORM) $(CFLAGS) $(LIBS) -o $(EXPORT_PTH)$(OUT)$(EXT)
+	$(CC) $(SRC:=.cpp) $(OSMODE) $(PLATFORM) $(CFLAGS) $(GDB) $(LIBS) -o $(EXPORT_PTH)$(OUT)$(EXT)
 
 dep:
 		makedepend -- $(CFLAGS) -- $(INCLUDES) $(SRC)

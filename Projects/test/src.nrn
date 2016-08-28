@@ -1,79 +1,21 @@
-?psuedo 0b00000001 eHi
-?psuedo 0b00000010 eMd
-?psuedo 0b00000100 eLo
-?psuedo 0b00001000 iHi
-?psuedo 0b00010000 iMd
-?psuedo 0b00100000 iLo
-?psuedo 0b01000000 pStr
-?psuedo 0b10000000 pWkn
+#Demo NeurOn source file
 
-cell intnrn
-[
-	float charge;
-	float decay;
-	float influx;
-	const float equilibrium;
-	const float threshold;
-	state refactory;
-	signal output;
-	signal filter;
-	signal prop;#propagating transmitter
-	synapse targets;
+#possible implementation
+#tags used for behavioral selection vs. identifier
+#across multiple disjointed libraries
+#add special properties?
 
-	override void init()
-	{
-		charge=0;
-		decay=0;
-		influx=0;
-		equilibrium=.5;
-		threshold=-55;
-		refactory=false;
-		filter = eHi || eMd || eLo || iHi || iMd || iLo || pStr || pWkn;
-		output = eMd;
-	}
+#axon: members
+#   sgnl
+#   target
 
-	override void update()
-	{
-		if (charge >= threshold)
-		{
-			fire();
-		}
-		else if (refactory)
-		{
+#[Send/Receive/Log/Required, ect...]
 
-		}else
-		{
+?import src2.nrn
 
-		}
-	}
-
-	override void fire()
-	{
-		loop(targets, tgt)
-		{
-			tgt.neuron.recieve(output, tgt.weight);
-		}
-
-		charge=0;
-		refactory=true;
-		prop=0;
-	}
-
-	override void recieve(signal sgnl, float weight)
-	{
-		#sgnl = sgnl & filter; & operator behaves as bitwise when applied to signal type
-		sgnl &= filter;# & operator behaves as bitwise when applied to signal type
-		influx+=(sgnl:0)*weight*1;#test
-		influx+=(sgnl:1)*weight*0.5;
-		influx+=(sgnl:2)*weight*0.2;
-		influx-=(sgnl:3)*weight*1;
-		influx-=(sgnl:4)*weight*0.5;
-		influx-=(sgnl:5)*weight*0.2;
-		prop = prop || sgnl:6 || sgnl:7;
-
-		loop(targets, tgt)
-		{
-			tgt.weight+=((sgnl:6 & weight) - (sgnl:7 & weight));
-		}
-	}
-]
+?psuedo signal:1 eHi
+?psuedo signal:2 eMd
+?psuedo signal:3 eLo
+?psuedo signal:4 iHi
+?psuedo signal:5 iMd
+?psuedo signal:6 iLo
