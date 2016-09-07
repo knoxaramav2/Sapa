@@ -19,7 +19,7 @@ using namespace std;
 #define _isOperator(x) (((x>=1 && x<=47) || (x>=58 && x<=64) || (x>=91 && x<=96) || (x>=123)) && !_isWhitespace(x))
 
 enum LoadState{
-  _NOCOMPILE, _CNS, _PRECOMP, _TOKENIZE, _MODEL, _ASSEMBLE
+  _NOCOMPILE, _CNS, _PRECOMP, _TOKENIZE, _COMPILE, _BUILD
 };
 
 struct Symbol{
@@ -32,8 +32,7 @@ struct KeyPair{
   vector <string> values;
 };
 
-struct Codestruct
-{
+struct Codestruct{
   vector <KeyPair> alia;
   vector <Symbol> symbolTable;
   vector <string> sources;
@@ -44,5 +43,6 @@ struct Codestruct
 Codestruct LoadCNS(Config&);
 vector <Page> Precompile(Config&, Codestruct&);
 Token * Tokenize(Config&, Codestruct&, vector<Page>& );
+void Compile(Token*, Config&, Codestruct&);
 
 #endif

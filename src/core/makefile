@@ -4,14 +4,14 @@ CC=g++
 VERSION=\""1.0.0\""
 CFLAGS= -DVERSION=$(VERSION) -DDEV=true -Wall -std=c++14
 #LIBS= -lm -L/Libs -L. Libs/KNX_Library.a
-SRC=Launcher Error CNS Precompile Util Tokenizer
+SRC=Launcher Error CNS Precompile Util Tokenizer Compiler
 INCLUDES= -I.
 OUT=nrn
 CLEANEXT = o a
 BITVRS=64
 DBGFLAGS= -s --src test.cns --path Projects/test/
 GDB=
-LIBS= -lm -LLibs/$(BITVRS)bit -lKNX_Library
+LIBS= -lm -LLibs/$(BITVRS)bit -lKNX_Library -L../SDK/_bin/$(BITVRS) -lSapa_Sdk
 
 #configure for Linux and Windows
 ifeq ($(shell uname), Linux)

@@ -17,6 +17,8 @@ extern bool fatalWarning;
 extern unsigned numWarnings;
 extern unsigned numErrors;
 
+#define OK                  00000
+
 //Warning Codes 1-10,000
   //File
 #define WRN_UNEXPECT_EXT    00001//Unexpected file extension

@@ -23,4 +23,6 @@ int bitAction(int&, int, bm_operation);
 void printc(string, const char *);
 void printc(char, const char *);
 
+string toJson();
+
 #endif

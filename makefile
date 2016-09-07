@@ -1,6 +1,6 @@
 #Compiles entire SAPA project
 
-SUBDIRS = src/core/
+SUBDIRS = src/SDK/src src/core/
 BITVRS=64
 GDB=
 export BITVRS
@@ -16,7 +16,7 @@ run:
 
 .PHONY: dbg
 dbg:
-		./nrn.exe -d --src Projects/test/test.cns
+		./nrn.exe -d -c --src Projects/test/test.cns
 
 .PHONY: clean
 clean:

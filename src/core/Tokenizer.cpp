@@ -4,6 +4,7 @@
 #include "Libs/KNX_Libraries/KNX_String.h"
 
 //global, deal with it
+Codestruct * codestruct;
 bool debug=false;
 
 //generate and append a token
@@ -11,19 +12,25 @@ Token * genToken(Token * current, LCode code, string&raw, size_t start, size_t e
 {
   Token*ret=new Token();
 
+  //register symbol with table
+  if (code == lsym){
+
+  }
+
   ret->raw=string(raw.begin()+start, raw.begin()+end);
   ret->type=code;
 
   if (debug){
     if (code==lnan) printc(ret->raw, COLOR_WHITE);
     else if (code==lsym) printc(ret->raw, COLOR_RED);
-    else if (code>=10 && code<80) printc(ret->raw, COLOR_CYAN);
-    else if (code>=80 && code<90) printc(ret->raw, COLOR_BLUE);
-    else if (code>=90 && code<100) printc(ret->raw, COLOR_YELLOW);
-    else if (code>=100 && code<120) printc(ret->raw, COLOR_MAGENTA);
-    else if (code>=120 && code<130) printc(ret->raw, COLOR_GREEN);
-    else if (code>=130 && code<140) printc(ret->raw, COLOR_CYAN);
-    else printc("[ERROR " + ret->raw + "]", COLOR_YELLOW);
+    else if (code>=lLogicOperator && code<lType) printc(ret->raw, COLOR_CYAN);
+    else if (code>=lType && code<lMacro) printc(ret->raw, COLOR_BLUE);
+    else if (code>=lMacro && code<lComm) printc(ret->raw, COLOR_YELLOW);
+    else if (code>=lComm && code<lAttr) printc(ret->raw, COLOR_MAGENTA);
+    else if (code>=lAttr && code<lEncap) printc(ret->raw, COLOR_GREEN);
+    else if (code>=lEncap && code<lOrg) printc(ret->raw, COLOR_CYAN);
+    else if (code>=lOrg && code<lSystem) printc(ret->raw, COLOR_YELLOW);
+    else printc("[ERROR " + ret->raw + "]", COLOR_WHITE);
   }
 
   if (current==NULL){
@@ -155,7 +162,7 @@ Token * parseOperator(Token*current, string&raw, size_t&index, size_t&cursor)
 }
 
 //parse ordinary expression (preserves reference operators)
-Token * parseExpression(Token*current, string&raw, size_t&index, size_t&cursor, Codestruct&cs)
+Token * parseExpression(Token*current, string&raw, size_t&index, size_t&cursor)
 {
   size_t xindex = index;
   LCode code=lnan;
@@ -187,16 +194,17 @@ Token * parseExpression(Token*current, string&raw, size_t&index, size_t&cursor, 
   else if (term=="delete") code=ldel;
   else if (term=="new") code=lnew;
   else if (term=="goto") code=lelse;
-  else if (term=="true") code=ltrue;
-  else if (term=="false") code=lfalse;
   else if (term=="for") code=lfor;
   else if (term=="while") code=lwhile;
+  //macros
+  else if (term=="true")  {code=lint; string r="0001"; raw.replace(index, 4, r);}
+  else if (term=="false") {code=lint; string r="00000"; raw.replace(index, 5, r);}
   //check for existing declarations
   else{
     code=lsym;
     bool exists = false;
     code=lsym;
-    for (Symbol sym : cs.symbolTable){
+    for (Symbol sym : codestruct->symbolTable){
       if (sym.raw == term){
         exists = true;
         break;
@@ -206,7 +214,7 @@ Token * parseExpression(Token*current, string&raw, size_t&index, size_t&cursor, 
     Symbol symbol;
     symbol.raw=term;
     symbol.type=lsym;
-    if (!exists) cs.symbolTable.push_back(symbol);
+    if (!exists) codestruct->symbolTable.push_back(symbol);
   }
 
   Token * ret = genToken(current, code, raw, index, xindex);
@@ -238,7 +246,7 @@ Token * parseNumber(Token*current, string&raw, size_t&index, size_t&cursor){
 
 //determine type of symbol
 //if not a recognized keyword, add to symbol list
-Token * resolveSymbol(string symbol, Codestruct&cs)
+Token * resolveSymbol(string symbol)
 {
   Token * ret = new Token();
 
@@ -254,6 +262,8 @@ All operators, besides '.', will deliminate
 Token * Tokenize(Config&config, Codestruct&cs, vector<Page>&pages)
 {
   if (config.debug) printf("Beginning Tokenization\n");
+
+  codestruct = &cs;
 
   debug=config.debug;
 
@@ -273,7 +283,7 @@ Token * Tokenize(Config&config, Codestruct&cs, vector<Page>&pages)
       }else if (_isOperator(c)){
         stream = parseOperator(stream, page.raw, index, x);
       }else if (_isLetter(c)){
-        stream = parseExpression(stream, page.raw, index, x, cs);
+        stream = parseExpression(stream, page.raw, index, x);
       }else if (_isNumber(c)){
         stream = parseNumber(stream, page.raw, index, x);
       }else{
@@ -284,6 +294,17 @@ Token * Tokenize(Config&config, Codestruct&cs, vector<Page>&pages)
       }
     }
   }
+
+  //add terminator
+  Token * ns = new Token();
+  ns->previous=NULL;
+  stream->next=ns;
+  ns->type = lpend;
+
+  Token * end = new Token();
+  end->previous=stream;
+  stream->next=end;
+  end->type = lpend;
 
   if (config.debug && cs.symbolTable.size()>0){
     printf("\n\n\n\n");
@@ -298,6 +319,7 @@ Token * Tokenize(Config&config, Codestruct&cs, vector<Page>&pages)
       printf("\n");
       for (int x=0; x<50; ++x) printf("-");
     }
+    printf("\n");
   }
 
   if (stream == NULL)

@@ -106,9 +106,9 @@ Config parseCmd(int argc, char ** argv)
       switch(argv[x][1])
       {
         case 'd': config.debug=true; break;
-        case 'm': config.makefile=true; break;
-        case 'c': config.ctm=true; break;
-        case 'r': config.rte=true; break;
+        case 'm': config.makefile=true; setBuildLevel(_BUILD); break;
+        case 'c': config.ctm=true; setBuildLevel(_BUILD); break;
+        case 'r': config.rte=true; setBuildLevel(_BUILD); break;
         case 'w': suppressWarning=true; break;
         case 'e': suppressError=true; break;
         case 'f': fatalWarning=true; break;
@@ -130,7 +130,7 @@ Config parseCmd(int argc, char ** argv)
           config.cns= string(getFileName(argv[x])) + (extension.empty() ? "" : "."+extension);
           config.sourcePath = getPath(argv[x]);
 
-          setBuildLevel(_ASSEMBLE);
+          setBuildLevel(_TOKENIZE);
       }
       else if (strncmp(argv[x], "--lang", 6) == 0 && validateExpected(x, argc, argv))
       {
@@ -158,13 +158,16 @@ int main(int argc, char**argv)
 
   Codestruct codestruct;
   vector <Page> pages;
+  Token * stream;
 
   if (buildLevel >= _CNS)
     {codestruct = LoadCNS(config);}
   if (buildLevel >= _PRECOMP)
     {pages = Precompile(config, codestruct);}
   if (buildLevel >= _TOKENIZE)
-    {Tokenize(config, codestruct, pages);}
+    {stream = Tokenize(config, codestruct, pages);}
+  if (buildLevel >= _COMPILE)
+    {Compile(stream, config, codestruct);}
 
   if (isFatal() == false)
     printf("\nCompilation complete\n");
