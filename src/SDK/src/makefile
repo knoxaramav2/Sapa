@@ -4,7 +4,7 @@ CC=g++
 CFLAGS= -std=c++14 -pedantic -Wall
 LDFLAGS= -g
 LIBS= -lm
-SRC=DataStruct.cpp LangMap.cpp
+SRC=
 OBJ=$(SRC:.cpp=.o)
 INCLUDES= -I../headers
 OUT=libSapa_Sdk.a

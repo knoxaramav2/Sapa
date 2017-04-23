@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "Error.h"
+#include "../headers/Error.hpp"
 #include "Util.h"
 
 bool suppressError = false;

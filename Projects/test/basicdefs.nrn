@@ -1,0 +1,19 @@
+#*
+Cell, macro and method definition file
+*#
+
+cell logic{
+
+}
+
+cell sensory{
+
+}
+
+cluster <logic> ganglion{
+
+}
+
+generator wave{
+
+}

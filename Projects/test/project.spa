@@ -1,0 +1,8 @@
+#*
+Project file - generated through --new command line argument
+
+Set project parameters
+*#
+
+#design files
+source = testdesign.cns
