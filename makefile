@@ -1,9 +1,18 @@
 #Compiles entire SAPA project
 
-SUBDIRS = src/SDK/src src/core/
+SUBDIRS = src/SDK/ src/core/
+BINPATH=$(shell pwd)/bin_
+COMMON=-g
 BITVRS=64
-GDB=
+KLIB=-I ../../../KNX_Libraries/headers -L ../../../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
 export BITVRS
+export KLIB
+export COMMON
+export BINPATH
+
+#component version
+VERSION_NRN=-DVERSION=\"0.0.1\"
+VERSION_SDK=-DVERSION=\"0.0.1\"
 
 subdirs:
 	for dir in $(SUBDIRS); do \
@@ -12,11 +21,11 @@ subdirs:
 
 .PHONY: run
 run:
-		./nrn.exe --src Projects/test/test.cns
+		bin_/nrn.exe --src Projects/test/test.cns
 
 .PHONY: dbg
 dbg:
-		./nrn.exe -d -c --src Projects/test/test.cns
+		bin_/nrn.exe -d -c --src Projects/test/test.cns
 
 .PHONY: clean
 clean:

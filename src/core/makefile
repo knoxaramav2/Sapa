@@ -1,24 +1,19 @@
-# Compiles neurOn compiler
+#compiles core component
 
-CC=g++
-VERSION=\""1.0.0\""
-CFLAGS= -DVERSION=$(VERSION) -DDEV=true -Wall -std=c++14
-#LIBS= -lm -L/Libs -L. Libs/KNX_Library.a
-SRC=Launcher
-INCLUDES= -Iheaders.
-OUT=nrn
+EXPORT_PTH=../../bin_/
+CC = g++
+CFLAGS = -std=c++14 -Wall $(COMMON) -g $(VERSION_NRN)
+LFLAGS = -lm -ldl -lpthread -L$(BINPATH) -L$(EXPORT_PTH) -l:libSDK.so $(KLIB)
+OUT = nrn
 CLEANEXT = o a
 BITVRS=64
-DBGFLAGS= -s --src test.cns --path Projects/test/
-GDB=
-LIBS= -lm -LLibs/$(BITVRS)bit -lKNX_Library -L../SDK/_bin/$(BITVRS) -lSapa_Sdk
+DBGFLAG=
+SRC=Launcher.cpp
 
-#configure for Linux and Windows
 ifeq ($(shell uname), Linux)
 	FixPath = $1
 	PLATFORM = -D__LINUX
 	OSMODE = -DBITMODE=$(BITVRS)
-	EXPORT_PTH=../../
 	EXT=
 	RUNPATH=./$(EXPORT_PTH)$(OUT)$(EXT)
 else
@@ -26,24 +21,16 @@ else
 	FixPath = $(subst /,\,$1)
 	PLATFORM = -D__WINDOWS
 	OSMODE = -DBITMODE=$(BITVRS)
-	EXPORT_PTH=../../
 	EXT=.exe
-	RUNPATH=$(EXPORT_PTH)$(OUT).exe
+	RUNPATH=$(EXPORT_PTH)$(OUT)$(EXT)
 endif
-#-LLibs -lKNX_Library
-$(OUT):$(SRC:=.cpp)
-	$(CC) $(SRC:=.cpp) $(OSMODE) $(PLATFORM) $(CFLAGS) $(GDB) $(LIBS) -o $(EXPORT_PTH)$(OUT)$(EXT)
 
-dep:
-		makedepend -- $(CFLAGS) -- $(INCLUDES) $(SRC)
+all:
+	$(CC) $(SRC) $(OSMODE) $(CFLAGS) $(PLATFORM) $(LFLAGS) $(KLIB) -o $(RUNPATH)
 
 .PHONY: clean
 clean:
 	rm -f $@ *.o
-
-.PHONY: run
-run: $(OUT)
-	$(RUNPATH) --src test.cns -s
 
 .PHONY: dbg
 dbg: $(OUT)
