@@ -9,7 +9,7 @@ DFLAGS = -DDEBUG=$(DEBUG)#build debug arg
 OUT = libSDK.so
 CLEANEXT = o a
 DBGFLAGS= -d#command line debug arg
-SRC=sdk.cpp
+SRC=sdk.cpp object.cpp cell.cpp
 EXPORT_PTH=../../bin_/
 
 ifeq ($(shell uname), Linux)
