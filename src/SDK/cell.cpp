@@ -13,7 +13,13 @@ lattice::lattice(int w, int h, int d){
     _h = h;
     _d = d;
 
-    matrix = new cell**[w];
+    matrix = new cell***[w];
+    for(int x = 0; x < w; ++x){
+        matrix[x] = new cell ** [h];
+        for (int y = 0; y<h; ++y){
+            matrix[x][y] = new cell*[d];
+        }
+    }
     
 }
 

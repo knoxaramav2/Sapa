@@ -1,10 +1,12 @@
 #Compiles entire SAPA project
 
 SUBDIRS = src/SDK/ src/core/
-BINPATH=$(shell pwd)/bin_
+LOC_PATH = $(shell pwd)
+BINPATH=$(LOC_PATH)/bin_
 COMMON=-g
 BITVRS=64
-KLIB=-I ../../../KNX_Libraries/headers -L ../../../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
+KLIB_DEFAULT = ../../C/KNX_Libraries/
+KLIB=-I$(LOC_PATH)/$(KLIB_DEFAULT)src/headers -L$(LOC_PATH)/$(KLIB_DEFAULT)../KNX_Libraries/_bin/$(BITVRS) -lKNX_Library
 export BITVRS
 export KLIB
 export COMMON

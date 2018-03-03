@@ -27,7 +27,7 @@ class lattice{
 
     int _w, _h, _d;
 
-    cell *** matrix;
+    cell **** matrix;
 
     public:
 
